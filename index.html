@@ -126,14 +126,16 @@ body {
     gap: 5px;
 }
 .juri-btn button {
-    padding: 8px;
-    font-size: 0.8rem;
+    padding: 8px 3px;
+    font-size: 0.7rem;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.2);
     color: white;
     border-radius: 5px;
     cursor: pointer;
+    line-height: 1.2;
 }
+.juri-btn button span { display: block; font-size: 0.6rem; opacity: 0.7; }
 
 .tengah {
     background: rgba(20,20,40,0.8);
@@ -233,9 +235,9 @@ body {
             <button class="tombol" onclick="addScore('biru', 3)">Bantingan</button>
         </div>
         <div class="juri-btn">
-            <button onclick="juriVote('biru', 1)">JURI 1</button>
-            <button onclick="juriVote('biru', 2)">JURI 2</button>
-            <button onclick="juriVote('biru', 3)">JURI 3</button>
+            <button onclick="juriVote('biru', 1)">JURI 1<br><span id="namaJuri1">Nama</span></button>
+            <button onclick="juriVote('biru', 2)">JURI 2<br><span id="namaJuri2">Nama</span></button>
+            <button onclick="juriVote('biru', 3)">JURI 3<br><span id="namaJuri3">Nama</span></button>
         </div>
     </div>
 
@@ -270,9 +272,9 @@ body {
             <button class="tombol" onclick="addScore('merah', 3)">Bantingan</button>
         </div>
         <div class="juri-btn">
-            <button onclick="juriVote('merah', 1)">JURI 1</button>
-            <button onclick="juriVote('merah', 2)">JURI 2</button>
-            <button onclick="juriVote('merah', 3)">JURI 3</button>
+            <button onclick="juriVote('merah', 1)">JURI 1<br><span id="namaJuri1b">Nama</span></button>
+            <button onclick="juriVote('merah', 2)">JURI 2<br><span id="namaJuri2b">Nama</span></button>
+            <button onclick="juriVote('merah', 3)">JURI 3<br><span id="namaJuri3b">Nama</span></button>
         </div>
     </div>
 </div>
@@ -291,6 +293,14 @@ body {
 
     <label style="color:white;display:block;text-align:left">Nama Perguruan Atas Timer:</label>
     <input type="text" id="inputPerguruanTengah" placeholder="PSHT TERATE">
+
+    <h4>NAMA JURI</h4>
+    <label style="color:white;display:block;text-align:left">Nama Juri 1:</label>
+    <input type="text" id="inputJuri1" placeholder="Nama Juri 1">
+    <label style="color:white;display:block;text-align:left">Nama Juri 2:</label>
+    <input type="text" id="inputJuri2" placeholder="Nama Juri 2">
+    <label style="color:white;display:block;text-align:left">Nama Juri 3:</label>
+    <input type="text" id="inputJuri3" placeholder="Nama Juri 3">
 
     <h4>LOGO</h4>
     <label style="color:white;display:block;text-align:left">Logo Tengah Atas Timer:</label>
@@ -363,6 +373,17 @@ window.onload=function(){
   document.getElementById('foto-biru').src=localStorage.getItem('fotoBiru')||'https://via.placeholder.com/100/00aaff/ffffff?text=BIRU';
   document.getElementById('foto-merah').src=localStorage.getItem('fotoMerah')||'https://via.placeholder.com/100/ff3333/ffffff?text=MERAH';
 
+  // NAMA JURI
+  let j1=localStorage.getItem('namaJuri1')||'Nama';
+  let j2=localStorage.getItem('namaJuri2')||'Nama';
+  let j3=localStorage.getItem('namaJuri3')||'Nama';
+  document.getElementById('namaJuri1').textContent=j1;
+  document.getElementById('namaJuri2').textContent=j2;
+  document.getElementById('namaJuri3').textContent=j3;
+  document.getElementById('namaJuri1b').textContent=j1;
+  document.getElementById('namaJuri2b').textContent=j2;
+  document.getElementById('namaJuri3b').textContent=j3;
+
   document.getElementById('inputKejuaraan').value=localStorage.getItem('judulKejuaraan')||'KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN';
   document.getElementById('inputPerguruanTengah').value=localStorage.getItem('namaPerguruanTengah')||'PSHT TERATE';
   document.getElementById('inputJudulBiru').value=localStorage.getItem('judulBiru')||'BIRU';
@@ -371,6 +392,9 @@ window.onload=function(){
   document.getElementById('inputPerguruanBiru').value=localStorage.getItem('perguruanBiru')||'';
   document.getElementById('inputMerah').value=localStorage.getItem('namaMerah')||'';
   document.getElementById('inputBiru').value=localStorage.getItem('namaBiru')||'';
+  document.getElementById('inputJuri1').value=localStorage.getItem('namaJuri1')||'';
+  document.getElementById('inputJuri2').value=localStorage.getItem('namaJuri2')||'';
+  document.getElementById('inputJuri3').value=localStorage.getItem('namaJuri3')||'';
 }
 
 // SETTINGS
@@ -405,6 +429,10 @@ document.getElementById('btnSave').onclick=function(){
   localStorage.setItem('namaBiru',document.getElementById('inputBiru').value);
   localStorage.setItem('perguruanMerah',document.getElementById('inputPerguruanMerah').value);
   localStorage.setItem('perguruanBiru',document.getElementById('inputPerguruanBiru').value);
+
+  localStorage.setItem('namaJuri1',document.getElementById('inputJuri1').value);
+  localStorage.setItem('namaJuri2',document.getElementById('inputJuri2').value);
+  localStorage.setItem('namaJuri3',document.getElementById('inputJuri3').value);
 
   const logoTengahFile=document.getElementById('inputLogoTengah').files[0];
   if(logoTengahFile){
@@ -445,6 +473,13 @@ document.getElementById('btnSave').onclick=function(){
   document.getElementById('perguruan-biru').textContent=document.getElementById('inputPerguruanBiru').value;
   document.getElementById('perguruan-merah').textContent=document.getElementById('inputPerguruanMerah').value;
 
+  document.getElementById('namaJuri1').textContent=document.getElementById('inputJuri1').value||'Nama';
+  document.getElementById('namaJuri2').textContent=document.getElementById('inputJuri2').value||'Nama';
+  document.getElementById('namaJuri3').textContent=document.getElementById('inputJuri3').value||'Nama';
+  document.getElementById('namaJuri1b').textContent=document.getElementById('inputJuri1').value||'Nama';
+  document.getElementById('namaJuri2b').textContent=document.getElementById('inputJuri2').value||'Nama';
+  document.getElementById('namaJuri3b').textContent=document.getElementById('inputJuri3').value||'Nama';
+
   alert('Disimpan! Semua data aman di HP kamu bro');
   document.getElementById('settingsPopup').style.display='none';
 }
@@ -460,7 +495,8 @@ function addScore(warna, poin) {
 }
 
 function juriVote(warna, juri) {
-    alert('JURI ' + juri + ' vote untuk ' + warna.toUpperCase());
+    let namaJuri = localStorage.getItem('namaJuri'+juri)||'Juri '+juri;
+    alert(namaJuri + ' vote untuk ' + warna.toUpperCase());
 }
 
 function setBabak(n) {
