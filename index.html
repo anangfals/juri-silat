@@ -47,7 +47,7 @@ body {
     border-radius:50%;
     border:2px solid currentColor;
     object-fit:cover;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 .biru.corner-logo { left: 10px; color:#00aaff; }
 .merah.corner-logo { right: 10px; color:#ff3333; }
@@ -58,16 +58,22 @@ body {
     border-radius:50%;
     border:3px solid;
     object-fit:cover;
-    margin:0 auto 15px;
+    margin:10px auto 15px;
     display:block;
     box-shadow:0 0 20px currentColor;
 }
 .biru.foto-atlet { border-color:#00aaff; color:#00aaff; }
 .merah.foto-atlet { border-color:#ff3333; color:#ff3333; }
 
-.judul { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+.judul {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align:center;
+    text-shadow:0 0 15px currentColor;
+}
 .biru.judul { color: #00aaff; }
-.merah.judul { color: #ff3333; text-align: right; }
+.merah.judul { color: #ff3333; }
 
 .score {
     font-size: 8rem;
@@ -84,10 +90,10 @@ body {
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
+    text-align:center;
 }
 .merah.atlet {
     background: linear-gradient(90deg, transparent, rgba(255,51,51,0.3));
-    text-align: right;
 }
 .atlet.nama { font-size: 1.1rem; font-weight: bold; }
 .atlet.perguruan { font-size: 0.9rem; opacity: 0.8; margin-top: 5px; }
@@ -143,6 +149,13 @@ body {
     margin: 10px auto;
     box-shadow:0 0 20px #00f5d4;
 }
+.nama-perguruan-tengah {
+    font-size:1rem;
+    color:#00f5d4;
+    margin:5px 0 15px;
+    font-weight:bold;
+    text-shadow:0 0 10px #00f5d4;
+}
 .timer {
     font-size: 4rem;
     font-weight: bold;
@@ -186,10 +199,10 @@ body {
 #settingsPopup img{width:70px;height:70px;border-radius:50%;border:3px solid #00f5d4;object-fit:cover;display:none;margin:10px auto}
 
 @media (max-width: 768px) {
-   .container { grid-template-columns: 1fr; }
-   .tengah { order: -1; }
-   .score { font-size: 5rem; }
-   .timer { font-size: 3rem; }
+ .container { grid-template-columns: 1fr; }
+ .tengah { order: -1; }
+ .score { font-size: 5rem; }
+ .timer { font-size: 3rem; }
 }
 </style>
 </head>
@@ -203,8 +216,8 @@ body {
 <div class="container">
     <!-- BIRU -->
     <div class="biru">
-        <img id="logo-biru" src="logo.png" class="corner-logo">
-        <div class="judul">BIRU</div>
+        <img id="logo-biru" src="https://via.placeholder.com/40/00aaff/ffffff?text=IPSI" class="corner-logo">
+        <div class="judul" id="judulBiru">BIRU</div>
         <img id="foto-biru" src="https://via.placeholder.com/100/00aaff/ffffff?text=BIRU" class="foto-atlet">
         <div class="score" id="score-biru">0</div>
         <div class="atlet">
@@ -225,8 +238,8 @@ body {
 
     <!-- TENGAH -->
     <div class="tengah">
-        <img id="logo-tengah" src="logo.png" class="logo-discors">
-        <div id="namaPerguruanTengah" style="font-size:1rem;color:#00f5d4;margin:5px 0">PSHT TERATE</div>
+        <img id="logo-tengah" src="https://via.placeholder.com/80/00f5d4/000?text=PSHT" class="logo-discors">
+        <div class="nama-perguruan-tengah" id="namaPerguruanTengah">PSHT TERATE</div>
         <div style="font-size:0.9rem; opacity:0.7">TIMER</div>
         <div class="timer" id="timer">02:00</div>
         <div style="font-size:0.8rem; opacity:0.7; margin-bottom:10px">BABAK AKTIF</div>
@@ -240,8 +253,8 @@ body {
 
     <!-- MERAH -->
     <div class="merah">
-        <img id="logo-merah" src="logo.png" class="corner-logo">
-        <div class="judul">MERAH</div>
+        <img id="logo-merah" src="https://via.placeholder.com/40/ff3333/ffffff?text=IPSI" class="corner-logo">
+        <div class="judul" id="judulMerah">MERAH</div>
         <img id="foto-merah" src="https://via.placeholder.com/100/ff3333/ffffff?text=MERAH" class="foto-atlet">
         <div class="score" id="score-merah">0</div>
         <div class="atlet">
@@ -273,11 +286,26 @@ body {
     <label style="color:white;display:block;text-align:left">Nama Kejuaraan:</label>
     <input type="text" id="inputKejuaraan" placeholder="KEJUARAAN PENCAT SILAT">
 
-    <label style="color:white;display:block;text-align:left">Logo Perguruan/IPS:</label>
-    <input type="file" id="inputLogo" accept="image/*" style="color:white">
-    <img id="previewLogo">
+    <label style="color:white;display:block;text-align:left">Nama Perguruan Atas Timer:</label>
+    <input type="text" id="inputPerguruanTengah" placeholder="PSHT TERATE">
+
+    <h4>LOGO</h4>
+    <label style="color:white;display:block;text-align:left">Logo Tengah Atas Timer:</label>
+    <input type="file" id="inputLogoTengah" accept="image/*" style="color:white">
+    <img id="previewLogoTengah">
+
+    <label style="color:white;display:block;text-align:left">Logo Pojok Biru:</label>
+    <input type="file" id="inputLogoBiru" accept="image/*" style="color:white">
+    <img id="previewLogoBiru">
+
+    <label style="color:white;display:block;text-align:left">Logo Pojok Merah:</label>
+    <input type="file" id="inputLogoMerah" accept="image/*" style="color:white">
+    <img id="previewLogoMerah">
 
     <h4>ATLET MERAH</h4>
+    <label style="color:white;display:block;text-align:left">Judul Merah:</label>
+    <input type="text" id="inputJudulMerah" placeholder="MERAH" value="MERAH">
+
     <label style="color:white;display:block;text-align:left">Nama Atlet Merah:</label>
     <input type="text" id="inputMerah" placeholder="Atlet Merah">
 
@@ -289,6 +317,9 @@ body {
     <img id="previewFotoMerah">
 
     <h4>ATLET BIRU</h4>
+    <label style="color:white;display:block;text-align:left">Judul Biru:</label>
+    <input type="text" id="inputJudulBiru" placeholder="BIRU" value="BIRU">
+
     <label style="color:white;display:block;text-align:left">Nama Atlet Biru:</label>
     <input type="text" id="inputBiru" placeholder="Atlet Biru">
 
@@ -312,22 +343,27 @@ let timerInterval, detik = 120;
 // LOAD DATA DARI HP
 window.onload=function(){
   document.getElementById('judulKejuaraan').textContent=localStorage.getItem('judulKejuaraan')||'KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN';
-  document.getElementById('namaPerguruanTengah').textContent=localStorage.getItem('namaPerguruanUmum')||'PSHT TERATE';
+  document.getElementById('namaPerguruanTengah').textContent=localStorage.getItem('namaPerguruanTengah')||'PSHT TERATE';
+
+  document.getElementById('judulBiru').textContent=localStorage.getItem('judulBiru')||'BIRU';
+  document.getElementById('judulMerah').textContent=localStorage.getItem('judulMerah')||'MERAH';
 
   document.getElementById('nama-biru').textContent=localStorage.getItem('namaBiru')||'NAMA ATLET BIRU';
   document.getElementById('nama-merah').textContent=localStorage.getItem('namaMerah')||'NAMA ATLET MERAH';
   document.getElementById('perguruan-biru').textContent=localStorage.getItem('perguruanBiru')||'NAMA PERGURUAN BIRU';
   document.getElementById('perguruan-merah').textContent=localStorage.getItem('perguruanMerah')||'NAMA PERGURUAN MERAH';
 
-  let logo=localStorage.getItem('logoPerguruan')||'logo.png';
-  document.getElementById('logo-tengah').src=logo;
-  document.getElementById('logo-biru').src=logo;
-  document.getElementById('logo-merah').src=logo;
+  document.getElementById('logo-tengah').src=localStorage.getItem('logoTengah')||'https://via.placeholder.com/80/00f5d4/000?text=PSHT';
+  document.getElementById('logo-biru').src=localStorage.getItem('logoBiru')||'https://via.placeholder.com/40/00aaff/ffffff?text=IPSI';
+  document.getElementById('logo-merah').src=localStorage.getItem('logoMerah')||'https://via.placeholder.com/40/ff3333/ffffff?text=IPSI';
 
   document.getElementById('foto-biru').src=localStorage.getItem('fotoBiru')||'https://via.placeholder.com/100/00aaff/ffffff?text=BIRU';
   document.getElementById('foto-merah').src=localStorage.getItem('fotoMerah')||'https://via.placeholder.com/100/ff3333/ffffff?text=MERAH';
 
   document.getElementById('inputKejuaraan').value=localStorage.getItem('judulKejuaraan')||'KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN';
+  document.getElementById('inputPerguruanTengah').value=localStorage.getItem('namaPerguruanTengah')||'PSHT TERATE';
+  document.getElementById('inputJudulBiru').value=localStorage.getItem('judulBiru')||'BIRU';
+  document.getElementById('inputJudulMerah').value=localStorage.getItem('judulMerah')||'MERAH';
   document.getElementById('inputPerguruanMerah').value=localStorage.getItem('perguruanMerah')||'';
   document.getElementById('inputPerguruanBiru').value=localStorage.getItem('perguruanBiru')||'';
   document.getElementById('inputMerah').value=localStorage.getItem('namaMerah')||'';
@@ -351,24 +387,38 @@ function previewFile(inputId, imgId){
     }
   }
 }
-previewFile('inputLogo','previewLogo');
+previewFile('inputLogoTengah','previewLogoTengah');
+previewFile('inputLogoBiru','previewLogoBiru');
+previewFile('inputLogoMerah','previewLogoMerah');
 previewFile('inputFotoMerah','previewFotoMerah');
 previewFile('inputFotoBiru','previewFotoBiru');
 
 document.getElementById('btnSave').onclick=function(){
   localStorage.setItem('judulKejuaraan',document.getElementById('inputKejuaraan').value);
+  localStorage.setItem('namaPerguruanTengah',document.getElementById('inputPerguruanTengah').value);
+  localStorage.setItem('judulMerah',document.getElementById('inputJudulMerah').value);
+  localStorage.setItem('judulBiru',document.getElementById('inputJudulBiru').value);
   localStorage.setItem('namaMerah',document.getElementById('inputMerah').value);
   localStorage.setItem('namaBiru',document.getElementById('inputBiru').value);
   localStorage.setItem('perguruanMerah',document.getElementById('inputPerguruanMerah').value);
   localStorage.setItem('perguruanBiru',document.getElementById('inputPerguruanBiru').value);
 
-  const logoFile=document.getElementById('inputLogo').files[0];
-  if(logoFile){
-    localStorage.setItem('logoPerguruan',document.getElementById('previewLogo').src);
-    let logo=document.getElementById('previewLogo').src;
-    document.getElementById('logo-tengah').src=logo;
-    document.getElementById('logo-biru').src=logo;
-    document.getElementById('logo-merah').src=logo;
+  const logoTengahFile=document.getElementById('inputLogoTengah').files[0];
+  if(logoTengahFile){
+    localStorage.setItem('logoTengah',document.getElementById('previewLogoTengah').src);
+    document.getElementById('logo-tengah').src=document.getElementById('previewLogoTengah').src;
+  }
+
+  const logoBiruFile=document.getElementById('inputLogoBiru').files[0];
+  if(logoBiruFile){
+    localStorage.setItem('logoBiru',document.getElementById('previewLogoBiru').src);
+    document.getElementById('logo-biru').src=document.getElementById('previewLogoBiru').src;
+  }
+
+  const logoMerahFile=document.getElementById('inputLogoMerah').files[0];
+  if(logoMerahFile){
+    localStorage.setItem('logoMerah',document.getElementById('previewLogoMerah').src);
+    document.getElementById('logo-merah').src=document.getElementById('previewLogoMerah').src;
   }
 
   const fotoMerahFile=document.getElementById('inputFotoMerah').files[0];
@@ -384,12 +434,15 @@ document.getElementById('btnSave').onclick=function(){
   }
 
   document.getElementById('judulKejuaraan').textContent=document.getElementById('inputKejuaraan').value;
+  document.getElementById('namaPerguruanTengah').textContent=document.getElementById('inputPerguruanTengah').value;
+  document.getElementById('judulBiru').textContent=document.getElementById('inputJudulBiru').value;
+  document.getElementById('judulMerah').textContent=document.getElementById('inputJudulMerah').value;
   document.getElementById('nama-biru').textContent=document.getElementById('inputBiru').value;
   document.getElementById('nama-merah').textContent=document.getElementById('inputMerah').value;
   document.getElementById('perguruan-biru').textContent=document.getElementById('inputPerguruanBiru').value;
   document.getElementById('perguruan-merah').textContent=document.getElementById('inputPerguruanMerah').value;
 
-  alert('Disimpan! Data aman di HP kamu bro');
+  alert('Disimpan! Semua data aman di HP kamu bro');
   document.getElementById('settingsPopup').style.display='none';
 }
 
