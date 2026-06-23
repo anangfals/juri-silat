@@ -7,31 +7,36 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
 body{background:#0a0a0a;color:#fff;overflow:hidden;height:100vh}
-.header{background:linear-gradient(90deg,#6b21a8,#a855f7);text-align:center;padding:1.5vh;font-size:2.5vw;font-weight:bold}
-.header small{display:block;font-size:1.2vw;margin-top:0.5vh}
-.container{display:flex;height:calc(100vh - 10vh);gap:1vw;padding:1vw}
-.col{flex:1;display:flex;flex-direction:column;align-items:center;padding:2vh;border-radius:20px;border:3px solid}
-.col.biru{border-color:#3b82f6;box-shadow:0 30px #3b82f6}
-.col.merah{border-color:#ef4444;box-shadow:0 0 30px #ef4444}
-.col.tengah{border-color:#a855f7;box-shadow:0 0 30px #a855f7}
-.title{font-size:4vw;font-weight:900;margin-bottom:2vh;text-shadow:0 0 20px currentColor}
-.circle{width:15vw;height:15vw;border-radius:50%;border:6px solid #fff;margin:2vh 0;box-shadow:0 0 30px #fff}
-.score{font-size:18vw;font-weight:900;line-height:1;margin:3vh 0;text-shadow:0 0 30px #fff}
-.info{font-size:1.5vw;text-align:center;margin:1vh 0;color:#ccc}
-.btn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1vh;width:90%;margin-top:2vh}
-.btn{padding:2vh;font-size:1.3vw;border:none;border-radius:12px;cursor:pointer;background:#1e1e1e;color:#fff;border:2px solid #444;transition:0.1s}
+.header{background:linear-gradient(90deg,#6b21a8,#a855f7);text-align:center;padding:1.2vh;font-size:2vw;font-weight:bold}
+.header small{display:block;font-size:1vw;margin-top:0.3vh}
+.container{display:flex;height:calc(100vh - 8vh);gap:0.8vw;padding:0.8vw}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;padding:1.5vh;border-radius:15px;border:2px solid}
+.col.biru{border-color:#3b82f6;box-shadow:0 0 20px #3b82f6}
+.col.merah{border-color:#ef4444;box-shadow:0 0 20px #ef4444}
+.col.tengah{border-color:#a855f7;box-shadow:0 0 20px #a855f7}
+.title{font-size:3vw;font-weight:900;margin-bottom:1vh;text-shadow:0 0 15px currentColor}
+.circle{width:10vw;height:10vw;border-radius:50%;border:4px solid #fff;margin:1vh 0}
+.score{font-size:12vw;font-weight:900;line-height:1;margin:2vh 0;text-shadow:0 0 20px #fff}
+.info{font-size:1.2vw;text-align:center;margin:0.5vh 0;color:#ccc}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8vh;width:90%;margin-top:1vh}
+.btn{padding:1.5vh;font-size:1vw;border:none;border-radius:10px;cursor:pointer;background:#1e1e1e;color:#fff;border:1px solid #444}
 .btn:active{transform:scale(0.95);background:#333}
-.timer{font-size:10vw;font-weight:900;color:#ffd700;text-shadow:0 0 30px #ffd700;margin:3vh 0}
-.babak-btn{width:90%;padding:2vh;margin:1vh 0;border:none;border-radius:12px;font-size:2vw;font-weight:bold;cursor:pointer;background:#222;color:#fff;border:2px solid #555}
+.timer{font-size:7vw;font-weight:900;color:#ffd700;text-shadow:0 0 20px #ffd700;margin:2vh 0}
+.babak-btn{width:90%;padding:1.5vh;margin:0.8vh 0;border:none;border-radius:10px;font-size:1.5vw;font-weight:bold;cursor:pointer;background:#222;color:#fff;border:1px solid #555}
 .babak-btn.active{background:linear-gradient(90deg,#7c3aed,#a855f7);border-color:#a855f7}
 .btn-mulai{background:#3b82f6;border-color:#3b82f6}
 .btn-reset{background:#ef4444;border-color:#ef4444}
 .btn-wa{background:#22c55e;border-color:#22c55e}
-.settings{position:fixed;top:2vh;right:2vw;background:#111;padding:2vh;border-radius:15px;border:2px solid #333;z-index:1000}
-.settings select,.settings button{width:100%;padding:1.5vh;font-size:1.5vw;margin-top:1vh;background:#222;color:#fff;border:1px solid #555;border-radius:8px;cursor:pointer}
-.mode-display.settings,.mode-display.btn{display:none!important}
-.status{position:fixed;bottom:2vh;left:2vw;font-size:1.5vw;color:#22c55e}
-input{width:90%;padding:1.5vh;margin:1vh 0;background:#1a1a1a;border:2px solid #444;border-radius:8px;color:#fff;font-size:1.5vw;text-align:center}
+
+/* SETTINGS MENU */
+.settings-btn{position:fixed;top:1vh;right:1vw;background:#1a1a1a;border:2px solid #444;border-radius:50%;width:5vw;height:5vw;font-size:2.5vw;cursor:pointer;z-index:1001}
+.settings-panel{position:fixed;top:7vh;right:1vw;background:#111;padding:2vh;border-radius:15px;border:2px solid #333;z-index:1000;display:none;width:25vw}
+.settings-panel.active{display:block}
+.settings-panel select,.settings-panel button{width:100%;padding:1.2vh;font-size:1.2vw;margin-top:1vh;background:#222;color:#fff;border:1px solid #555;border-radius:8px;cursor:pointer}
+input{width:90%;padding:1.2vh;margin:0.8vh 0;background:#1a1a1a;border:2px solid #444;border-radius:8px;color:#fff;font-size:1.2vw;text-align:center}
+.status{position:fixed;bottom:1vh;left:1vw;font-size:1.2vw;color:#22c55e}
+.mode-display.settings-btn,.mode-display.settings-panel{display:none!important}
+.mode-display.btn,.mode-display input{display:none!important}
 </style>
 </head>
 <body>
@@ -44,7 +49,7 @@ input{width:90%;padding:1.5vh;margin:1vh 0;background:#1a1a1a;border:2px solid #
   <!-- KOLOM BIRU -->
   <div class="col biru">
     <div class="title">BIRU</div>
-    <div class="circle" style="border-color:#3b82f6;box-shadow:0 0 30px #3b82f6"></div>
+    <div class="circle" style="border-color:#3b82f6"></div>
     <div class="score" id="scoreBiru">0</div>
     <input type="text" id="namaBiru" placeholder="NAMA ATLET BIRU" onblur="saveNama()">
     <input type="text" id="perguruanBiru" placeholder="NAMA PERGURUAN BIRU" onblur="saveNama()">
@@ -52,19 +57,16 @@ input{width:90%;padding:1.5vh;margin:1vh 0;background:#1a1a1a;border:2px solid #
       <button class="btn" onclick="addScore('biru',1)">Serangan<br>Tangan</button>
       <button class="btn" onclick="addScore('biru',2)">Tendangan</button>
       <button class="btn" onclick="addScore('biru',3)">Bantingan</button>
-      <button class="btn" onclick="addScore('biru',-1)">JURI 1<br><small id="j1b">0</small></button>
-      <button class="btn" onclick="addScore('biru',-2)">JURI 2<br><small id="j2b">0</small></button>
-      <button class="btn" onclick="addScore('biru',-3)">JURI 3<br><small id="j3b">0</small></button>
     </div>
   </div>
 
   <!-- KOLOM TENGAH -->
   <div class="col tengah">
-    <div class="circle" style="border-color:#a855f7;box-shadow:0 0 30px #a855f7"></div>
-    <div style="font-size:2vw;color:#a855f7;font-weight:bold">PSHT TERATE</div>
-    <div style="font-size:1.5vw;margin:1vh 0">TIMER</div>
+    <div class="circle" style="border-color:#a855f7"></div>
+    <div style="font-size:1.5vw;color:#a855f7;font-weight:bold">PSHT TERATE</div>
+    <div style="font-size:1.2vw;margin:0.5vh 0">TIMER</div>
     <div class="timer" id="timer">03:00</div>
-    <div style="font-size:1.5vw">BABAK AKTIF</div>
+    <div style="font-size:1.2vw">BABAK AKTIF</div>
     <button class="babak-btn active" onclick="setBabak(1)">BABAK 1</button>
     <button class="babak-btn" onclick="setBabak(2)">BABAK 2</button>
     <button class="babak-btn" onclick="setBabak(3)">BABAK 3</button>
@@ -76,7 +78,7 @@ input{width:90%;padding:1.5vh;margin:1vh 0;background:#1a1a1a;border:2px solid #
   <!-- KOLOM MERAH -->
   <div class="col merah">
     <div class="title">MERAH</div>
-    <div class="circle" style="border-color:#ef4444;box-shadow:0 0 30px #ef4444"></div>
+    <div class="circle" style="border-color:#ef4444"></div>
     <div class="score" id="scoreMerah">0</div>
     <input type="text" id="namaMerah" placeholder="NAMA ATLET MERAH" onblur="saveNama()">
     <input type="text" id="perguruanMerah" placeholder="NAMA PERGURUAN MERAH" onblur="saveNama()">
@@ -84,20 +86,19 @@ input{width:90%;padding:1.5vh;margin:1vh 0;background:#1a1a1a;border:2px solid #
       <button class="btn" onclick="addScore('merah',1)">Serangan<br>Tangan</button>
       <button class="btn" onclick="addScore('merah',2)">Tendangan</button>
       <button class="btn" onclick="addScore('merah',3)">Bantingan</button>
-      <button class="btn" onclick="addScore('merah',-1)">JURI 1<br><small id="j1m">0</small></button>
-      <button class="btn" onclick="addScore('merah',-2)">JURI 2<br><small id="j2m">0</small></button>
-      <button class="btn" onclick="addScore('merah',-3)">JURI 3<br><small id="j3m">0</small></button>
     </div>
   </div>
 </div>
 
-<div class="settings">
-  <label>Mode HP:</label>
+<!-- TOMBOL SETTINGS -->
+<button class="settings-btn" onclick="toggleSettings()">⚙️</button>
+<div class="settings-panel" id="settingsPanel">
+  <label style="font-size:1.5vw">Pilih Mode HP:</label>
   <select id="modeSelect">
-    <option value="juri">MODE JURI - Bisa Pencet</option>
+    <option value="juri">MODE JURI - Bisa Input</option>
     <option value="display">MODE DISPLAY - Layar Saja</option>
   </select>
-  <button onclick="saveMode()">SIMPAN</button>
+  <button onclick="saveMode()">SIMPAN MODE</button>
 </div>
 
 <div class="status" id="status">Connecting...</div>
@@ -115,14 +116,26 @@ let timerInterval;
 let isRunning = false;
 
 document.getElementById('modeSelect').value = mode;
-if(mode === 'display') document.body.classList.add('mode-display');
+applyMode();
+
+window.toggleSettings = function() {
+  document.getElementById('settingsPanel').classList.toggle('active');
+}
+
+function applyMode() {
+  if(mode === 'display') {
+    document.body.classList.add('mode-display');
+  } else {
+    document.body.classList.remove('mode-display');
+  }
+}
 
 window.saveMode = function() {
   mode = document.getElementById('modeSelect').value;
   localStorage.setItem('juriMode', mode);
-  if(mode === 'display') document.body.classList.add('mode-display');
-  else document.body.classList.remove('mode-display');
-  alert('Mode: ' + mode.toUpperCase());
+  applyMode();
+  document.getElementById('settingsPanel').classList.remove('active');
+  alert('Mode disimpan: ' + mode.toUpperCase());
 }
 
 // Load data realtime
@@ -177,9 +190,8 @@ window.toggleTimer = function() {
       onValue(dataRef, (snap) => {
         let t = snap.val().timer || 180;
         t = t - 1;
-        if(t < 0) t = 0;
+        if(t < 0) {t = 0; clearInterval(timerInterval); isRunning = false;}
         update(dataRef, {timer: t});
-        if(t === 0) {clearInterval(timerInterval); isRunning = false;}
       }, {onlyOnce: true});
     }, 1000);
   } else clearInterval(timerInterval);
