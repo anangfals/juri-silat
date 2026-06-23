@@ -43,6 +43,9 @@ input[type="file"]::file-selector-button{padding:5px 10px;background:#3b82f6;bor
 /* MODE JURI: Sembunyiin setting babak + tombol mulai reset */
 .mode-juri.babak-control,.mode-juri.btn-mulai,.mode-juri.btn-reset{display:none!important}
 
+/* MODE OPERATOR: Sembunyiin tombol nilai +1 +2 +3 */
+.mode-operator.btn-grid{display:none!important}
+
 /* MODE DISPLAY: Cuma tampil foto, nama, perguruan, score */
 .mode-display.settings-btn,
 .mode-display.btn,
@@ -96,7 +99,6 @@ input[type="file"]::file-selector-button{padding:5px 10px;background:#3b82f6;bor
   margin-bottom:15px;
 }
 
-/* MODE OPERATOR: Tunjukin semua */
 .mode-operator.babak-control{display:block}
 </style>
 </head>
@@ -259,6 +261,7 @@ onValue(dataRef, (snap) => {
 });
 
 window.addScore = async (warna, nilai) => {
+  if(mode!== 'juri') return; // Operator & Display gak bisa nambah skor
   const snap = await get(dataRef);
   const d = snap.val();
   update(dataRef, {[warna]: d[warna] + nilai});
