@@ -34,6 +34,7 @@ body {
     padding: 20px;
     border: 2px solid;
     backdrop-filter: blur(10px);
+    position:relative;
 }
 .biru { border-color: #00aaff; box-shadow: 0 0 30px rgba(0,170,255,0.3); }
 .merah { border-color: #ff3333; box-shadow: 0 0 30px rgba(255,51,51,0.3); }
@@ -42,14 +43,29 @@ body {
     position: absolute;
     top: 10px;
     width: 40px;
-    opacity: 0.3;
+    height:40px;
     border-radius:50%;
     border:2px solid currentColor;
+    object-fit:cover;
+    opacity: 0.8;
 }
 .biru.corner-logo { left: 10px; color:#00aaff; }
 .merah.corner-logo { right: 10px; color:#ff3333; }
 
-.judul { font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; }
+.foto-atlet {
+    width:100px;
+    height:100px;
+    border-radius:50%;
+    border:3px solid;
+    object-fit:cover;
+    margin:0 auto 15px;
+    display:block;
+    box-shadow:0 0 20px currentColor;
+}
+.biru.foto-atlet { border-color:#00aaff; color:#00aaff; }
+.merah.foto-atlet { border-color:#ff3333; color:#ff3333; }
+
+.judul { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
 .biru.judul { color: #00aaff; }
 .merah.judul { color: #ff3333; text-align: right; }
 
@@ -57,7 +73,7 @@ body {
     font-size: 8rem;
     font-weight: bold;
     text-align: center;
-    margin: 40px 0;
+    margin: 30px 0;
     text-shadow: 0 0 30px currentColor;
 }
 .biru.score { color: #00ddff; }
@@ -163,9 +179,11 @@ body {
 
 /* SETTINGS POPUP */
 #btnSettings{position:fixed;bottom:20px;right:20px;width:50px;height:50px;border-radius:50%;background:#00f5d4;border:none;font-size:24px;cursor:pointer;z-index:999;box-shadow:0 0 15px #00f5d4}
-#settingsPopup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:1000;justify-content:center;align-items:center}
-#settingsPopup>div{background:#1a1a2e;padding:20px;border-radius:15px;width:90%;max-width:400px;border:2px solid #00f5d4}
+#settingsPopup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:1000;justify-content:center;align-items:center;overflow-y:auto}
+#settingsPopup>div{background:#1a1a2e;padding:20px;border-radius:15px;width:90%;max-width:450px;border:2px solid #00f5d4;margin:20px 0}
 #settingsPopup input{width:100%;padding:8px;margin:5px 0 15px;border-radius:5px;border:none;box-sizing:border-box}
+#settingsPopup h4{color:#00f5d4;margin:15px 0 10px;border-bottom:1px solid #333;padding-bottom:5px}
+#settingsPopup img{width:70px;height:70px;border-radius:50%;border:3px solid #00f5d4;object-fit:cover;display:none;margin:10px auto}
 
 @media (max-width: 768px) {
    .container { grid-template-columns: 1fr; }
@@ -187,10 +205,11 @@ body {
     <div class="biru">
         <img id="logo-biru" src="logo.png" class="corner-logo">
         <div class="judul">BIRU</div>
+        <img id="foto-biru" src="https://via.placeholder.com/100/00aaff/ffffff?text=BIRU" class="foto-atlet">
         <div class="score" id="score-biru">0</div>
         <div class="atlet">
             <div class="nama" id="nama-biru">NAMA ATLET BIRU</div>
-            <div class="perguruan" id="perguruan-biru">NAMA PERGURUAN</div>
+            <div class="perguruan" id="perguruan-biru">NAMA PERGURUAN BIRU</div>
         </div>
         <div class="tombol-grid">
             <button class="tombol" onclick="addScore('biru', 1)">Serangan Tangan</button>
@@ -223,10 +242,11 @@ body {
     <div class="merah">
         <img id="logo-merah" src="logo.png" class="corner-logo">
         <div class="judul">MERAH</div>
+        <img id="foto-merah" src="https://via.placeholder.com/100/ff3333/ffffff?text=MERAH" class="foto-atlet">
         <div class="score" id="score-merah">0</div>
         <div class="atlet">
             <div class="nama" id="nama-merah">NAMA ATLET MERAH</div>
-            <div class="perguruan" id="perguruan-merah">NAMA PERGURUAN</div>
+            <div class="perguruan" id="perguruan-merah">NAMA PERGURUAN MERAH</div>
         </div>
         <div class="tombol-grid">
             <button class="tombol" onclick="addScore('merah', 1)">Serangan Tangan</button>
@@ -249,23 +269,37 @@ body {
   <div>
     <h3 style="color:#ffdd00;margin-top:0;text-align:center">SETTINGS JURI</h3>
 
+    <h4>UM</h4>
     <label style="color:white;display:block;text-align:left">Nama Kejuaraan:</label>
     <input type="text" id="inputKejuaraan" placeholder="KEJUARAAN PENCAT SILAT">
 
-    <label style="color:white;display:block;text-align:left">Nama Perguruan:</label>
-    <input type="text" id="inputPerguruan" placeholder="PSHT TERATE">
+    <label style="color:white;display:block;text-align:left">Logo Perguruan/IPS:</label>
+    <input type="file" id="inputLogo" accept="image/*" style="color:white">
+    <img id="previewLogo">
 
-    <label style="color:white;display:block;text-align:left">Nama Atlet MERAH:</label>
+    <h4>ATLET MERAH</h4>
+    <label style="color:white;display:block;text-align:left">Nama Atlet Merah:</label>
     <input type="text" id="inputMerah" placeholder="Atlet Merah">
 
-    <label style="color:white;display:block;text-align:left">Nama Atlet BIRU:</label>
+    <label style="color:white;display:block;text-align:left">Perguruan Merah:</label>
+    <input type="text" id="inputPerguruanMerah" placeholder="PSHT Cabang...">
+
+    <label style="color:white;display:block;text-align:left">Foto Atlet Merah:</label>
+    <input type="file" id="inputFotoMerah" accept="image/*" style="color:white">
+    <img id="previewFotoMerah">
+
+    <h4>ATLET BIRU</h4>
+    <label style="color:white;display:block;text-align:left">Nama Atlet Biru:</label>
     <input type="text" id="inputBiru" placeholder="Atlet Biru">
 
-    <label style="color:white;display:block;text-align:left">Logo Perguruan:</label>
-    <input type="file" id="inputLogo" accept="image/*" style="color:white">
-    <img id="previewLogo" style="width:70px;height:70px;border-radius:50%;border:3px solid #00f5d4;object-fit:cover;display:none;margin:10px auto">
+    <label style="color:white;display:block;text-align:left">Perguruan Biru:</label>
+    <input type="text" id="inputPerguruanBiru" placeholder="PSHT Cabang...">
 
-    <button id="btnSave" style="width:100%;padding:12px;background:linear-gradient(90deg,#8e2de2,#4a00e0);border:none;color:white;border-radius:8px;font-weight:bold;cursor:pointer">SIMPAN</button>
+    <label style="color:white;display:block;text-align:left">Foto Atlet Biru:</label>
+    <input type="file" id="inputFotoBiru" accept="image/*" style="color:white">
+    <img id="previewFotoBiru">
+
+    <button id="btnSave" style="width:100%;padding:12px;background:linear-gradient(90deg,#8e2de2,#4a00e0);border:none;color:white;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px">SIMPAN</button>
     <button id="btnClose" style="width:100%;padding:10px;background:#333;border:none;color:white;border-radius:8px;margin-top:8px;cursor:pointer">TUTUP</button>
   </div>
 </div>
@@ -278,19 +312,24 @@ let timerInterval, detik = 120;
 // LOAD DATA DARI HP
 window.onload=function(){
   document.getElementById('judulKejuaraan').textContent=localStorage.getItem('judulKejuaraan')||'KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN';
-  document.getElementById('namaPerguruanTengah').textContent=localStorage.getItem('namaPerguruan')||'PSHT TERATE';
+  document.getElementById('namaPerguruanTengah').textContent=localStorage.getItem('namaPerguruanUmum')||'PSHT TERATE';
+
   document.getElementById('nama-biru').textContent=localStorage.getItem('namaBiru')||'NAMA ATLET BIRU';
   document.getElementById('nama-merah').textContent=localStorage.getItem('namaMerah')||'NAMA ATLET MERAH';
-  document.getElementById('perguruan-biru').textContent=localStorage.getItem('namaPerguruan')||'NAMA PERGURUAN';
-  document.getElementById('perguruan-merah').textContent=localStorage.getItem('namaPerguruan')||'NAMA PERGURUAN';
+  document.getElementById('perguruan-biru').textContent=localStorage.getItem('perguruanBiru')||'NAMA PERGURUAN BIRU';
+  document.getElementById('perguruan-merah').textContent=localStorage.getItem('perguruanMerah')||'NAMA PERGURUAN MERAH';
 
   let logo=localStorage.getItem('logoPerguruan')||'logo.png';
   document.getElementById('logo-tengah').src=logo;
   document.getElementById('logo-biru').src=logo;
   document.getElementById('logo-merah').src=logo;
 
+  document.getElementById('foto-biru').src=localStorage.getItem('fotoBiru')||'https://via.placeholder.com/100/00aaff/ffffff?text=BIRU';
+  document.getElementById('foto-merah').src=localStorage.getItem('fotoMerah')||'https://via.placeholder.com/100/ff3333/ffffff?text=MERAH';
+
   document.getElementById('inputKejuaraan').value=localStorage.getItem('judulKejuaraan')||'KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN';
-  document.getElementById('inputPerguruan').value=localStorage.getItem('namaPerguruan')||'PSHT TERATE';
+  document.getElementById('inputPerguruanMerah').value=localStorage.getItem('perguruanMerah')||'';
+  document.getElementById('inputPerguruanBiru').value=localStorage.getItem('perguruanBiru')||'';
   document.getElementById('inputMerah').value=localStorage.getItem('namaMerah')||'';
   document.getElementById('inputBiru').value=localStorage.getItem('namaBiru')||'';
 }
@@ -299,23 +338,29 @@ window.onload=function(){
 document.getElementById('btnSettings').onclick=()=>document.getElementById('settingsPopup').style.display='flex';
 document.getElementById('btnClose').onclick=()=>document.getElementById('settingsPopup').style.display='none';
 
-document.getElementById('inputLogo').onchange=function(e){
-  const file=e.target.files[0];
-  if(file){
-    const reader=new FileReader();
-    reader.onload=function(event){
-      document.getElementById('previewLogo').src=event.target.result;
-      document.getElementById('previewLogo').style.display='block';
+function previewFile(inputId, imgId){
+  document.getElementById(inputId).onchange=function(e){
+    const file=e.target.files[0];
+    if(file){
+      const reader=new FileReader();
+      reader.onload=function(event){
+        document.getElementById(imgId).src=event.target.result;
+        document.getElementById(imgId).style.display='block';
+      }
+      reader.readAsDataURL(file);
     }
-    reader.readAsDataURL(file);
   }
 }
+previewFile('inputLogo','previewLogo');
+previewFile('inputFotoMerah','previewFotoMerah');
+previewFile('inputFotoBiru','previewFotoBiru');
 
 document.getElementById('btnSave').onclick=function(){
   localStorage.setItem('judulKejuaraan',document.getElementById('inputKejuaraan').value);
-  localStorage.setItem('namaPerguruan',document.getElementById('inputPerguruan').value);
   localStorage.setItem('namaMerah',document.getElementById('inputMerah').value);
   localStorage.setItem('namaBiru',document.getElementById('inputBiru').value);
+  localStorage.setItem('perguruanMerah',document.getElementById('inputPerguruanMerah').value);
+  localStorage.setItem('perguruanBiru',document.getElementById('inputPerguruanBiru').value);
 
   const logoFile=document.getElementById('inputLogo').files[0];
   if(logoFile){
@@ -326,12 +371,23 @@ document.getElementById('btnSave').onclick=function(){
     document.getElementById('logo-merah').src=logo;
   }
 
+  const fotoMerahFile=document.getElementById('inputFotoMerah').files[0];
+  if(fotoMerahFile){
+    localStorage.setItem('fotoMerah',document.getElementById('previewFotoMerah').src);
+    document.getElementById('foto-merah').src=document.getElementById('previewFotoMerah').src;
+  }
+
+  const fotoBiruFile=document.getElementById('inputFotoBiru').files[0];
+  if(fotoBiruFile){
+    localStorage.setItem('fotoBiru',document.getElementById('previewFotoBiru').src);
+    document.getElementById('foto-biru').src=document.getElementById('previewFotoBiru').src;
+  }
+
   document.getElementById('judulKejuaraan').textContent=document.getElementById('inputKejuaraan').value;
-  document.getElementById('namaPerguruanTengah').textContent=document.getElementById('inputPerguruan').value;
   document.getElementById('nama-biru').textContent=document.getElementById('inputBiru').value;
   document.getElementById('nama-merah').textContent=document.getElementById('inputMerah').value;
-  document.getElementById('perguruan-biru').textContent=document.getElementById('inputPerguruan').value;
-  document.getElementById('perguruan-merah').textContent=document.getElementById('inputPerguruan').value;
+  document.getElementById('perguruan-biru').textContent=document.getElementById('inputPerguruanBiru').value;
+  document.getElementById('perguruan-merah').textContent=document.getElementById('inputPerguruanMerah').value;
 
   alert('Disimpan! Data aman di HP kamu bro');
   document.getElementById('settingsPopup').style.display='none';
@@ -381,7 +437,9 @@ function resetAll() {
 function kirimWA() {
     let namaBiru = document.getElementById('nama-biru').textContent;
     let namaMerah = document.getElementById('nama-merah').textContent;
-    let pesan = `Hasil Babak ${babak}%0A%0ABIRU: ${namaBiru} - ${scoreBiru}%0AMERAH: ${namaMerah} - ${scoreMerah}`;
+    let perguruanBiru = document.getElementById('perguruan-biru').textContent;
+    let perguruanMerah = document.getElementById('perguruan-merah').textContent;
+    let pesan = `Hasil Babak ${babak}%0A%0ABIRU: ${namaBiru} - ${perguruanBiru} - ${scoreBiru}%0AMERAH: ${namaMerah} - ${perguruanMerah} - ${scoreMerah}`;
     window.open('https://wa.me/?text=' + pesan);
 }
 </script>
