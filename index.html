@@ -3,536 +3,306 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Juri Silat Pro - Discors Style</title>
+<title>Juri Silat Pro - Online</title>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-body {
-    background: #0a0a1a;
-    color: white;
-    overflow-x: hidden;
-    background-image: radial-gradient(circle at center, #1a1a3a 0%, #0a0a1a 100%);
-}
-.header {
-    text-align: center;
-    padding: 15px;
-    background: linear-gradient(90deg, #4a00e0, #8e2de2);
-}
-.header h1 { font-size: 1.3rem; color: #ff88ff; text-shadow: 0 0 10px #ff00ff; }
-.header h2 { font-size: 1.1rem; color: #ffdd55; margin-top: 5px; }
-
-.container {
-    display: grid;
-    grid-template-columns: 1fr 300px 1fr;
-    gap: 15px;
-    padding: 20px;
-    min-height: 80vh;
-}
-
-.biru,.merah {
-    background: rgba(0,0,0,0.6);
-    border-radius: 15px;
-    padding: 20px;
-    border: 2px solid;
-    backdrop-filter: blur(10px);
-    position:relative;
-}
-.biru { border-color: #00aaff; box-shadow: 0 0 30px rgba(0,170,255,0.3); }
-.merah { border-color: #ff3333; box-shadow: 0 0 30px rgba(255,51,51,0.3); }
-
-.corner-logo {
-    position: absolute;
-    top: 10px;
-    width: 40px;
-    height:40px;
-    border-radius:50%;
-    border:2px solid currentColor;
-    object-fit:cover;
-    opacity: 0.9;
-}
-.biru.corner-logo { left: 10px; color:#00aaff; }
-.merah.corner-logo { right: 10px; color:#ff3333; }
-
-.foto-atlet {
-    width:100px;
-    height:100px;
-    border-radius:50%;
-    border:3px solid;
-    object-fit:cover;
-    margin:10px auto 15px;
-    display:block;
-    box-shadow:0 0 20px currentColor;
-}
-.biru.foto-atlet { border-color:#00aaff; color:#00aaff; }
-.merah.foto-atlet { border-color:#ff3333; color:#ff3333; }
-
-.judul {
-    font-size: 3rem;
-    font-weight: 900;
-    margin-bottom: 15px;
-    text-align:center;
-    text-shadow: 0 0 20px currentColor, 0 0 40px currentColor;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-}
-.biru.judul { color: #00aaff; }
-.merah.judul { color: #ff3333; }
-
-.score {
-    font-size: 8rem;
-    font-weight: bold;
-    text-align: center;
-    margin: 30px 0;
-    text-shadow: 0 0 30px currentColor;
-}
-.biru.score { color: #00ddff; }
-.merah.score { color: #ff5555; }
-
-.atlet {
-    background: linear-gradient(90deg, rgba(0,170,255,0.3), transparent);
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    text-align:center;
-}
-.merah.atlet {
-    background: linear-gradient(90deg, transparent, rgba(255,51,51,0.3));
-}
-.atlet.nama { font-size: 1.1rem; font-weight: bold; }
-.atlet.perguruan { font-size: 0.9rem; opacity: 0.8; margin-top: 5px; }
-
-.tombol-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 15px;
-}
-.tombol {
-    padding: 15px 5px;
-    border: none;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: 0.2s;
-}
-.tombol:active { transform: scale(0.95); }
-.biru.tombol:hover { background: #00aaff; }
-.merah.tombol:hover { background: #ff3333; }
-
-.juri-btn {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
-}
-.juri-btn button {
-    padding: 8px 3px;
-    font-size: 0.7rem;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    line-height: 1.2;
-}
-.juri-btn button span { display: block; font-size: 0.6rem; opacity: 0.7; }
-
-.tengah {
-    background: rgba(20,20,40,0.8);
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-    border: 2px solid #8e2de2;
-}
-.logo-discors {
-    width: 80px;
-    height:80px;
-    border-radius:50%;
-    border:3px solid #00f5d4;
-    object-fit:cover;
-    margin: 10px auto;
-    box-shadow:0 0 20px #00f5d4;
-}
-.nama-perguruan-tengah {
-    font-size:1rem;
-    color:#00f5d4;
-    margin:5px 0 15px;
-    font-weight:bold;
-    text-shadow:0 0 10px #00f5d4;
-}
-.timer {
-    font-size: 4rem;
-    font-weight: bold;
-    color: #ffdd00;
-    margin: 20px 0;
-    text-shadow: 0 0 20px #ffaa00;
-}
-.babak-btn {
-    width: 100%;
-    padding: 12px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    cursor: pointer;
-}
-.babak-btn.aktif {
-    background: linear-gradient(90deg, #8e2de2, #4a00e0);
-    box-shadow: 0 0 15px #8e2de2;
-}
-.control-btn {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 8px;
-    background: #00aaff;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-.reset-btn { background: #ff3333; margin-top: 5px; }
-
-/* SETTINGS POPUP */
-#btnSettings{position:fixed;bottom:20px;right:20px;width:50px;height:50px;border-radius:50%;background:#00f5d4;border:none;font-size:24px;cursor:pointer;z-index:999;box-shadow:0 0 15px #00f5d4}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{background:#0a0a1a;color:white;overflow-x:hidden;background-image:radial-gradient(circle at center,#1a1a3a 0%,#0a0a1a 100%)}
+.header{text-align:center;padding:15px;background:linear-gradient(90deg,#4a00e0,#8e2de2)}
+.header h1{font-size:1.3rem;color:#ff88ff;text-shadow:0 0 10px #ff00ff}
+.header h2{font-size:1.1rem;color:#ffdd55;margin-top:5px}
+.container{display:grid;grid-template-columns:1fr 300px 1fr;gap:15px;padding:20px;min-height:80vh}
+.biru,.merah{background:rgba(0,0,0,0.6);border-radius:15px;padding:20px;border:2px solid;backdrop-filter:blur(10px);position:relative}
+.biru{border-color:#00aaff;box-shadow:0 0 30px rgba(0,170,255,0.3)}
+.merah{border-color:#ff3333;box-shadow:0 0 30px rgba(255,51,51,0.3)}
+.corner-logo{position:absolute;top:10px;width:40px;height:40px;border-radius:50%;border:2px solid;object-fit:cover}
+.biru.corner-logo{left:10px;border-color:#00aaff}
+.merah.corner-logo{right:10px;border-color:#ff3333}
+.foto-atlet{width:100px;height:100px;border-radius:50%;border:3px solid;object-fit:cover;margin:10px auto 15px;display:block}
+.biru.foto-atlet{border-color:#00aaff}
+.merah.foto-atlet{border-color:#ff3333}
+.judul{font-size:3rem;font-weight:900;margin-bottom:15px;text-align:center;text-shadow:0 0 20px currentColor,0 0 40px currentColor;letter-spacing:3px;text-transform:uppercase}
+.biru.judul{color:#00aaff}
+.merah.judul{color:#ff3333}
+.score{font-size:8rem;font-weight:bold;text-align:center;margin:30px 0;text-shadow:0 0 30px currentColor}
+.biru.score{color:#00ddff}
+.merah.score{color:#ff5555}
+.atlet{background:rgba(255,255,255,0.05);padding:15px;border-radius:10px;margin-bottom:20px;text-align:center}
+.atlet.nama{font-size:1.1rem;font-weight:bold}
+.atlet.perguruan{font-size:0.9rem;opacity:0.8;margin-top:5px}
+.tombol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}
+.tombol{padding:15px 5px;border:none;border-radius:10px;background:rgba(255,255,255,0.1);color:white;font-size:0.9rem;cursor:pointer}
+.tombol:active{transform:scale(0.95)}
+.biru.tombol:hover{background:#00aaff}
+.merah.tombol:hover{background:#ff3333}
+.tombol:disabled{opacity:0.3;cursor:not-allowed}
+.juri-btn{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.juri-btn button{padding:8px 3px;font-size:0.7rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);color:white;border-radius:5px;cursor:pointer;line-height:1.2}
+.juri-btn button span{display:block;font-size:0.6rem;opacity:0.7}
+.tengah{background:rgba(20,20,40,0.8);border-radius:15px;padding:20px;text-align:center;border:2px solid #8e2de2}
+.logo-discors{width:80px;height:80px;border-radius:50%;border:3px solid #00f5d4;object-fit:cover;margin:10px auto}
+#namaPerguruanTengah{font-size:1rem;color:#00f5d4;margin:5px 0 15px;font-weight:bold;text-shadow:0 0 10px #00f5d4}
+.timer{font-size:4rem;font-weight:bold;color:#ffdd00;margin:20px 0;text-shadow:0 0 20px #ffaa00}
+.babak-btn{width:100%;padding:12px;margin:5px 0;border:none;border-radius:8px;background:rgba(255,255,255,0.1);color:white;cursor:pointer}
+.babak-btn.aktif{background:linear-gradient(90deg,#8e2de2,#4a00e0)}
+.control-btn{width:100%;padding:12px;margin-top:10px;border:none;border-radius:8px;background:#00aaff;color:white;font-weight:bold;cursor:pointer}
+.control-btn:disabled{opacity:0.3;cursor:not-allowed}
+.reset-btn{background:#ff3333}
+#btnSettings{position:fixed;bottom:20px;right:20px;width:50px;height:50px;border-radius:50%;background:#00f5d4;border:none;font-size:24px;cursor:pointer;z-index:999}
 #settingsPopup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:1000;justify-content:center;align-items:center;overflow-y:auto}
 #settingsPopup>div{background:#1a1a2e;padding:20px;border-radius:15px;width:90%;max-width:450px;border:2px solid #00f5d4;margin:20px 0}
-#settingsPopup input{width:100%;padding:8px;margin:5px 0 15px;border-radius:5px;border:none;box-sizing:border-box}
+#settingsPopup input{width:100%;padding:8px;margin:5px 0 15px;border-radius:5px;border:none}
 #settingsPopup h4{color:#00f5d4;margin:15px 0 10px;border-bottom:1px solid #333;padding-bottom:5px}
 #settingsPopup img{width:70px;height:70px;border-radius:50%;border:3px solid #00f5d4;object-fit:cover;display:none;margin:10px auto}
-
-@media (max-width: 768px) {
-.container { grid-template-columns: 1fr; }
-.tengah { order: -1; }
-.score { font-size: 5rem; }
-.timer { font-size: 3rem; }
-.judul { font-size: 2.2rem; }
-}
+#modeStatus{position:fixed;top:10px;right:10px;padding:5px 10px;border-radius:5px;font-size:0.8rem;z-index:998}
+.mode-juri{background:#00ff88;color:#000}
+.mode-display{background:#ff5555;color:white}
+@media (max-width:768px){.container{grid-template-columns:1fr}.tengah{order:-1}.score{font-size:5rem}.timer{font-size:3rem}.judul{font-size:2.2rem}}
 </style>
 </head>
 <body>
 
+<div id="modeStatus">Mode: Loading...</div>
+
 <div class="header">
-    <h1 id="judulKejuaraan">KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN</h1>
-    <h2>2026</h2>
+<h1 id="judulKejuaraan">KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN</h1>
+<h2>2026</h2>
 </div>
 
 <div class="container">
-    <!-- BIRU -->
-    <div class="biru">
-        <img id="logo-biru" src="https://via.placeholder.com/40/00aaff/ffffff?text=IPSI" class="corner-logo">
-        <div class="judul" id="judulBiru">BIRU</div>
-        <img id="foto-biru" src="https://via.placeholder.com/100/00aaff/ffffff?text=BIRU" class="foto-atlet">
-        <div class="score" id="score-biru">0</div>
-        <div class="atlet">
-            <div class="nama" id="nama-biru">NAMA ATLET BIRU</div>
-            <div class="perguruan" id="perguruan-biru">NAMA PERGURUAN BIRU</div>
-        </div>
-        <div class="tombol-grid">
-            <button class="tombol" onclick="addScore('biru', 1)">Serangan Tangan</button>
-            <button class="tombol" onclick="addScore('biru', 2)">Tendangan</button>
-            <button class="tombol" onclick="addScore('biru', 3)">Bantingan</button>
-        </div>
-        <div class="juri-btn">
-            <button onclick="juriVote('biru', 1)">JURI 1<br><span id="namaJuri1">Nama</span></button>
-            <button onclick="juriVote('biru', 2)">JURI 2<br><span id="namaJuri2">Nama</span></button>
-            <button onclick="juriVote('biru', 3)">JURI 3<br><span id="namaJuri3">Nama</span></button>
-        </div>
-    </div>
-
-    <!-- TENGAH -->
-    <div class="tengah">
-        <img id="logo-tengah" src="https://via.placeholder.com/80/00f5d4/000?text=PSHT" class="logo-discors">
-        <div class="nama-perguruan-tengah" id="namaPerguruanTengah">PSHT TERATE</div>
-        <div style="font-size:0.9rem; opacity:0.7">TIMER</div>
-        <div class="timer" id="timer">02:00</div>
-        <div style="font-size:0.8rem; opacity:0.7; margin-bottom:10px">BABAK AKTIF</div>
-        <button class="babak-btn aktif" onclick="setBabak(1)">BABAK 1</button>
-        <button class="babak-btn" onclick="setBabak(2)">BABAK 2</button>
-        <button class="babak-btn" onclick="setBabak(3)">BABAK 3</button>
-        <button class="control-btn" onclick="startTimer()">MULAI</button>
-        <button class="control-btn reset-btn" onclick="resetAll()">RESET</button>
-        <button class="control-btn" onclick="kirimWA()" style="background:#25D366">KIRIM WA</button>
-    </div>
-
-    <!-- MERAH -->
-    <div class="merah">
-        <img id="logo-merah" src="https://via.placeholder.com/40/ff3333/ffffff?text=IPSI" class="corner-logo">
-        <div class="judul" id="judulMerah">MERAH</div>
-        <img id="foto-merah" src="https://via.placeholder.com/100/ff3333/ffffff?text=MERAH" class="foto-atlet">
-        <div class="score" id="score-merah">0</div>
-        <div class="atlet">
-            <div class="nama" id="nama-merah">NAMA ATLET MERAH</div>
-            <div class="perguruan" id="perguruan-merah">NAMA PERGURUAN MERAH</div>
-        </div>
-        <div class="tombol-grid">
-            <button class="tombol" onclick="addScore('merah', 1)">Serangan Tangan</button>
-            <button class="tombol" onclick="addScore('merah', 2)">Tendangan</button>
-            <button class="tombol" onclick="addScore('merah', 3)">Bantingan</button>
-        </div>
-        <div class="juri-btn">
-            <button onclick="juriVote('merah', 1)">JURI 1<br><span id="namaJuri1b">Nama</span></button>
-            <button onclick="juriVote('merah', 2)">JURI 2<br><span id="namaJuri2b">Nama</span></button>
-            <button onclick="juriVote('merah', 3)">JURI 3<br><span id="namaJuri3b">Nama</span></button>
-        </div>
-    </div>
+<div class="biru">
+<img id="logo-biru" src="https://via.placeholder.com/40/00aaff/ffffff?text=IPSI" class="corner-logo">
+<div class="judul" id="judulBiru">BIRU</div>
+<img id="foto-biru" src="https://via.placeholder.com/100/00aaff/ffffff?text=BIRU" class="foto-atlet">
+<div class="score" id="score-biru">0</div>
+<div class="atlet">
+<div class="nama" id="nama-biru">NAMA ATLET BIRU</div>
+<div class="perguruan" id="perguruan-biru">NAMA PERGURUAN BIRU</div>
+</div>
+<div class="tombol-grid">
+<button class="tombol" onclick="addScore('biru',1)">Serangan Tangan</button>
+<button class="tombol" onclick="addScore('biru',2)">Tendangan</button>
+<button class="tombol" onclick="addScore('biru',3)">Bantingan</button>
+</div>
+<div class="juri-btn">
+<button onclick="juriVote('biru',1)">JURI 1<br><span id="namaJuri1">Nama</span></button>
+<button onclick="juriVote('biru',2)">JURI 2<br><span id="namaJuri2">Nama</span></button>
+<button onclick="juriVote('biru',3)">JURI 3<br><span id="namaJuri3">Nama</span></button>
+</div>
 </div>
 
-<!-- TOMBOL SETTINGS -->
+<div class="tengah">
+<img id="logo-tengah" src="https://via.placeholder.com/80/00f5d4/000?text=PSHT" class="logo-discors">
+<div id="namaPerguruanTengah">PSHT TERATE</div>
+<div style="font-size:0.9rem;opacity:0.7">TIMER</div>
+<div class="timer" id="timer">02:00</div>
+<div style="font-size:0.8rem;opacity:0.7;margin-bottom:10px">BABAK AKTIF</div>
+<button class="babak-btn" onclick="setBabak(1)">BABAK 1</button>
+<button class="babak-btn" onclick="setBabak(2)">BABAK 2</button>
+<button class="babak-btn" onclick="setBabak(3)">BABAK 3</button>
+<button class="control-btn" onclick="startTimer()">MULAI</button>
+<button class="control-btn reset-btn" onclick="resetAll()">RESET</button>
+<button class="control-btn" onclick="kirimWA()" style="background:#25D366">KIRIM WA</button>
+</div>
+
+<div class="merah">
+<img id="logo-merah" src="https://via.placeholder.com/40/ff3333/ffffff?text=IPSI" class="corner-logo">
+<div class="judul" id="judulMerah">MERAH</div>
+<img id="foto-merah" src="https://via.placeholder.com/100/ff3333/ffffff?text=MERAH" class="foto-atlet">
+<div class="score" id="score-merah">0</div>
+<div class="atlet">
+<div class="nama" id="nama-merah">NAMA ATLET MERAH</div>
+<div class="perguruan" id="perguruan-merah">NAMA PERGURUAN MERAH</div>
+</div>
+<div class="tombol-grid">
+<button class="tombol" onclick="addScore('merah',1)">Serangan Tangan</button>
+<button class="tombol" onclick="addScore('merah',2)">Tendangan</button>
+<button class="tombol" onclick="addScore('merah',3)">Bantingan</button>
+</div>
+<div class="juri-btn">
+<button onclick="juriVote('merah',1)">JURI 1<br><span id="namaJuri1b">Nama</span></button>
+<button onclick="juriVote('merah',2)">JURI 2<br><span id="namaJuri2b">Nama</span></button>
+<button onclick="juriVote('merah',3)">JURI 3<br><span id="namaJuri3b">Nama</span></button>
+</div>
+</div>
+</div>
+
 <button id="btnSettings">⚙️</button>
 
-<!-- POPUP SETTINGS -->
 <div id="settingsPopup">
-  <div>
-    <h3 style="color:#ffdd00;margin-top:0;text-align:center">SETTINGS JURI</h3>
+<div>
+<h3 style="color:#ffdd00;text-align:center">SETTINGS</h3>
+<h4>MODE</h4>
+<label style="color:white">Pilih Mode HP Ini:</label>
+<select id="inputMode" style="width:100%;padding:8px;margin:5px 0 15px;border-radius:5px">
+<option value="juri">MODE JURI - Bisa Pencet Tombol</option>
+<option value="display">MODE DISPLAY - Cuma Liat Layar</option>
+</select>
 
-    <h4>UM</h4>
-    <label style="color:white;display:block;text-align:left">Nama Kejuaraan:</label>
-    <input type="text" id="inputKejuaraan" placeholder="KEJUARAAN PENCAT SILAT">
+<h4>UM</h4>
+<label>Nama Kejuaraan:</label><input type="text" id="inputKejuaraan">
+<label>Nama Perguruan Atas Timer:</label><input type="text" id="inputPerguruanTengah">
 
-    <label style="color:white;display:block;text-align:left">Nama Perguruan Atas Timer:</label>
-    <input type="text" id="inputPerguruanTengah" placeholder="PSHT TERATE">
+<h4>NAMA JURI</h4>
+<label>Nama Juri 1:</label><input type="text" id="inputJuri1">
+<label>Nama Juri 2:</label><input type="text" id="inputJuri2">
+<label>Nama Juri 3:</label><input type="text" id="inputJuri3">
 
-    <h4>NAMA JURI</h4>
-    <label style="color:white;display:block;text-align:left">Nama Juri 1:</label>
-    <input type="text" id="inputJuri1" placeholder="Nama Juri 1">
-    <label style="color:white;display:block;text-align:left">Nama Juri 2:</label>
-    <input type="text" id="inputJuri2" placeholder="Nama Juri 2">
-    <label style="color:white;display:block;text-align:left">Nama Juri 3:</label>
-    <input type="text" id="inputJuri3" placeholder="Nama Juri 3">
+<h4>LOGO</h4>
+<label>Logo Tengah:</label><input type="file" id="inputLogoTengah" accept="image/*"><img id="previewLogoTengah">
+<label>Logo Pojok Biru:</label><input type="file" id="inputLogoBiru" accept="image/*"><img id="previewLogoBiru">
+<label>Logo Pojok Merah:</label><input type="file" id="inputLogoMerah" accept="image/*"><img id="previewLogoMerah">
 
-    <h4>LOGO</h4>
-    <label style="color:white;display:block;text-align:left">Logo Tengah Atas Timer:</label>
-    <input type="file" id="inputLogoTengah" accept="image/*" style="color:white">
-    <img id="previewLogoTengah">
+<h4>MERAH</h4>
+<label>Judul:</label><input type="text" id="inputJudulMerah" value="MERAH">
+<label>Nama Atlet:</label><input type="text" id="inputMerah">
+<label>Perguruan:</label><input type="text" id="inputPerguruanMerah">
+<label>Foto:</label><input type="file" id="inputFotoMerah" accept="image/*"><img id="previewFotoMerah">
 
-    <label style="color:white;display:block;text-align:left">Logo Pojok Biru:</label>
-    <input type="file" id="inputLogoBiru" accept="image/*" style="color:white">
-    <img id="previewLogoBiru">
+<h4>BIRU</h4>
+<label>Judul:</label><input type="text" id="inputJudulBiru" value="BIRU">
+<label>Nama Atlet:</label><input type="text" id="inputBiru">
+<label>Perguruan:</label><input type="text" id="inputPerguruanBiru">
+<label>Foto:</label><input type="file" id="inputFotoBiru" accept="image/*"><img id="previewFotoBiru">
 
-    <label style="color:white;display:block;text-align:left">Logo Pojok Merah:</label>
-    <input type="file" id="inputLogoMerah" accept="image/*" style="color:white">
-    <img id="previewLogoMerah">
-
-    <h4>ATLET MERAH</h4>
-    <label style="color:white;display:block;text-align:left">Judul Merah:</label>
-    <input type="text" id="inputJudulMerah" placeholder="MERAH" value="MERAH">
-
-    <label style="color:white;display:block;text-align:left">Nama Atlet Merah:</label>
-    <input type="text" id="inputMerah" placeholder="Atlet Merah">
-
-    <label style="color:white;display:block;text-align:left">Perguruan Merah:</label>
-    <input type="text" id="inputPerguruanMerah" placeholder="PSHT Cabang...">
-
-    <label style="color:white;display:block;text-align:left">Foto Atlet Merah:</label>
-    <input type="file" id="inputFotoMerah" accept="image/*" style="color:white">
-    <img id="previewFotoMerah">
-
-    <h4>ATLET BIRU</h4>
-    <label style="color:white;display:block;text-align:left">Judul Biru:</label>
-    <input type="text" id="inputJudulBiru" placeholder="BIRU" value="BIRU">
-
-    <label style="color:white;display:block;text-align:left">Nama Atlet Biru:</label>
-    <input type="text" id="inputBiru" placeholder="Atlet Biru">
-
-    <label style="color:white;display:block;text-align:left">Perguruan Biru:</label>
-    <input type="text" id="inputPerguruanBiru" placeholder="PSHT Cabang...">
-
-    <label style="color:white;display:block;text-align:left">Foto Atlet Biru:</label>
-    <input type="file" id="inputFotoBiru" accept="image/*" style="color:white">
-    <img id="previewFotoBiru">
-
-    <button id="btnSave" style="width:100%;padding:12px;background:linear-gradient(90deg,#8e2de2,#4a00e0);border:none;color:white;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px">SIMPAN</button>
-    <button id="btnClose" style="width:100%;padding:10px;background:#333;border:none;color:white;border-radius:8px;margin-top:8px;cursor:pointer">TUTUP</button>
-  </div>
+<button id="btnSave">SIMPAN</button>
+<button id="btnClose">TUTUP</button>
+</div>
 </div>
 
 <script>
-let scoreBiru = 0, scoreMerah = 0;
-let babak = 1;
-let timerInterval, detik = 120;
+// GANTI INI PAKE DATABASE URL FIREBASE KAMU
+const firebaseConfig = {
+  databaseURL: "DATABASE_URL_KAMU_DISINI"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-// LOAD DATA DARI HP
+let scoreBiru=0,scoreMerah=0,babak=1,detik=120,timerInterval;
+let mode='juri'; // juri atau display
+
 window.onload=function(){
-  document.getElementById('judulKejuaraan').textContent=localStorage.getItem('judulKejuaraan')||'KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN';
-  document.getElementById('namaPerguruanTengah').textContent=localStorage.getItem('namaPerguruanTengah')||'PSHT TERATE';
+  mode=localStorage.getItem('mode')||'juri';
+  document.getElementById('inputMode').value=mode;
+  updateMode();
 
-  document.getElementById('judulBiru').textContent=localStorage.getItem('judulBiru')||'BIRU';
-  document.getElementById('judulMerah').textContent=localStorage.getItem('judulMerah')||'MERAH';
+  db.ref().on('value', snap=>{
+    let data=snap.val()||{};
+    scoreBiru=data.scoreBiru||0;
+    scoreMerah=data.scoreMerah||0;
+    babak=data.babak||1;
+    detik=data.detik||120;
 
-  document.getElementById('nama-biru').textContent=localStorage.getItem('namaBiru')||'NAMA ATLET BIRU';
-  document.getElementById('nama-merah').textContent=localStorage.getItem('namaMerah')||'NAMA ATLET MERAH';
-  document.getElementById('perguruan-biru').textContent=localStorage.getItem('perguruanBiru')||'NAMA PERGURUAN BIRU';
-  document.getElementById('perguruan-merah').textContent=localStorage.getItem('perguruanMerah')||'NAMA PERGURUAN MERAH';
+    document.getElementById('score-biru').textContent=scoreBiru;
+    document.getElementById('score-merah').textContent=scoreMerah;
+    document.getElementById('timer').textContent=Math.floor(detik/60).toString().padStart(2,'0')+':'+(detik%60).toString().padStart(2,'0');
 
-  document.getElementById('logo-tengah').src=localStorage.getItem('logoTengah')||'https://via.placeholder.com/80/00f5d4/000?text=PSHT';
-  document.getElementById('logo-biru').src=localStorage.getItem('logoBiru')||'https://via.placeholder.com/40/00aaff/ffffff?text=IPSI';
-  document.getElementById('logo-merah').src=localStorage.getItem('logoMerah')||'https://via.placeholder.com/40/ff3333/ffffff?text=IPSI';
+    document.getElementById('judulKejuaraan').textContent=data.judulKejuaraan||'KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN';
+    document.getElementById('namaPerguruanTengah').textContent=data.namaPerguruanTengah||'PSHT TERATE';
+    document.getElementById('judulBiru').textContent=data.judulBiru||'BIRU';
+    document.getElementById('judulMerah').textContent=data.judulMerah||'MERAH';
+    document.getElementById('nama-biru').textContent=data.namaBiru||'NAMA ATLET BIRU';
+    document.getElementById('nama-merah').textContent=data.namaMerah||'NAMA ATLET MERAH';
+    document.getElementById('perguruan-biru').textContent=data.perguruanBiru||'NAMA PERGURUAN BIRU';
+    document.getElementById('perguruan-merah').textContent=data.perguruanMerah||'NAMA PERGURUAN MERAH';
 
-  document.getElementById('foto-biru').src=localStorage.getItem('fotoBiru')||'https://via.placeholder.com/100/00aaff/ffffff?text=BIRU';
-  document.getElementById('foto-merah').src=localStorage.getItem('fotoMerah')||'https://via.placeholder.com/100/ff3333/ffffff?text=MERAH';
+    let j1=data.namaJuri1||'Nama',j2=data.namaJuri2||'Nama',j3=data.namaJuri3||'Nama';
+    document.getElementById('namaJuri1').textContent=j1;
+    document.getElementById('namaJuri2').textContent=j2;
+    document.getElementById('namaJuri3').textContent=j3;
+    document.getElementById('namaJuri1b').textContent=j1;
+    document.getElementById('namaJuri2b').textContent=j2;
+    document.getElementById('namaJuri3b').textContent=j3;
 
-  // NAMA JURI
-  let j1=localStorage.getItem('namaJuri1')||'Nama';
-  let j2=localStorage.getItem('namaJuri2')||'Nama';
-  let j3=localStorage.getItem('namaJuri3')||'Nama';
-  document.getElementById('namaJuri1').textContent=j1;
-  document.getElementById('namaJuri2').textContent=j2;
-  document.getElementById('namaJuri3').textContent=j3;
-  document.getElementById('namaJuri1b').textContent=j1;
-  document.getElementById('namaJuri2b').textContent=j2;
-  document.getElementById('namaJuri3b').textContent=j3;
+    document.querySelectorAll('.babak-btn').forEach((btn,i)=>btn.classList.toggle('aktif',i+1==babak));
 
-  document.getElementById('inputKejuaraan').value=localStorage.getItem('judulKejuaraan')||'KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN';
-  document.getElementById('inputPerguruanTengah').value=localStorage.getItem('namaPerguruanTengah')||'PSHT TERATE';
-  document.getElementById('inputJudulBiru').value=localStorage.getItem('judulBiru')||'BIRU';
-  document.getElementById('inputJudulMerah').value=localStorage.getItem('judulMerah')||'MERAH';
-  document.getElementById('inputPerguruanMerah').value=localStorage.getItem('perguruanMerah')||'';
-  document.getElementById('inputPerguruanBiru').value=localStorage.getItem('perguruanBiru')||'';
-  document.getElementById('inputMerah').value=localStorage.getItem('namaMerah')||'';
-  document.getElementById('inputBiru').value=localStorage.getItem('namaBiru')||'';
-  document.getElementById('inputJuri1').value=localStorage.getItem('namaJuri1')||'';
-  document.getElementById('inputJuri2').value=localStorage.getItem('namaJuri2')||'';
-  document.getElementById('inputJuri3').value=localStorage.getItem('namaJuri3')||'';
+    if(data.timerJalan){startTimer(false)}else{clearInterval(timerInterval)}
+  });
+
+  ['inputLogoTengah','inputLogoBiru','inputLogoMerah','inputFotoMerah','inputFotoBiru'].forEach((id,i)=>{
+    let imgId=['previewLogoTengah','previewLogoBiru','previewLogoMerah','previewFotoMerah','previewFotoBiru'][i];
+    document.getElementById(id).onchange=e=>{
+      let file=e.target.files[0];if(file){let r=new FileReader();r.onload=ev=>{document.getElementById(imgId).src=ev.target.result;document.getElementById(imgId).style.display='block'}};r.readAsDataURL(file)}
+  });
 }
 
-// SETTINGS
+function updateMode(){
+  mode=document.getElementById('inputMode').value;
+  localStorage.setItem('mode',mode);
+  let status=document.getElementById('modeStatus');
+  let tombol=document.querySelectorAll('.tombol,.control-btn,.babak-btn');
+
+  if(mode=='display'){
+    status.textContent='Mode: DISPLAY ONLY';
+    status.className='mode-display';
+    tombol.forEach(t=>t.disabled=true);
+    document.getElementById('btnSettings').style.display='block';
+  }else{
+    status.textContent='Mode: JURI';
+    status.className='mode-juri';
+    tombol.forEach(t=>t.disabled=false);
+  }
+}
+
 document.getElementById('btnSettings').onclick=()=>document.getElementById('settingsPopup').style.display='flex';
 document.getElementById('btnClose').onclick=()=>document.getElementById('settingsPopup').style.display='none';
 
-function previewFile(inputId, imgId){
-  document.getElementById(inputId).onchange=function(e){
-    const file=e.target.files[0];
-    if(file){
-      const reader=new FileReader();
-      reader.onload=function(event){
-        document.getElementById(imgId).src=event.target.result;
-        document.getElementById(imgId).style.display='block';
-      }
-      reader.readAsDataURL(file);
-    }
-  }
-}
-previewFile('inputLogoTengah','previewLogoTengah');
-previewFile('inputLogoBiru','previewLogoBiru');
-previewFile('inputLogoMerah','previewLogoMerah');
-previewFile('inputFotoMerah','previewFotoMerah');
-previewFile('inputFotoBiru','previewFotoBiru');
-
 document.getElementById('btnSave').onclick=function(){
-  localStorage.setItem('judulKejuaraan',document.getElementById('inputKejuaraan').value);
-  localStorage.setItem('namaPerguruanTengah',document.getElementById('inputPerguruanTengah').value);
-  localStorage.setItem('judulMerah',document.getElementById('inputJudulMerah').value);
-  localStorage.setItem('judulBiru',document.getElementById('inputJudulBiru').value);
-  localStorage.setItem('namaMerah',document.getElementById('inputMerah').value);
-  localStorage.setItem('namaBiru',document.getElementById('inputBiru').value);
-  localStorage.setItem('perguruanMerah',document.getElementById('inputPerguruanMerah').value);
-  localStorage.setItem('perguruanBiru',document.getElementById('inputPerguruanBiru').value);
-
-  localStorage.setItem('namaJuri1',document.getElementById('inputJuri1').value);
-  localStorage.setItem('namaJuri2',document.getElementById('inputJuri2').value);
-  localStorage.setItem('namaJuri3',document.getElementById('inputJuri3').value);
-
-  const logoTengahFile=document.getElementById('inputLogoTengah').files[0];
-  if(logoTengahFile){
-    localStorage.setItem('logoTengah',document.getElementById('previewLogoTengah').src);
-    document.getElementById('logo-tengah').src=document.getElementById('previewLogoTengah').src;
-  }
-
-  const logoBiruFile=document.getElementById('inputLogoBiru').files[0];
-  if(logoBiruFile){
-    localStorage.setItem('logoBiru',document.getElementById('previewLogoBiru').src);
-    document.getElementById('logo-biru').src=document.getElementById('previewLogoBiru').src;
-  }
-
-  const logoMerahFile=document.getElementById('inputLogoMerah').files[0];
-  if(logoMerahFile){
-    localStorage.setItem('logoMerah',document.getElementById('previewLogoMerah').src);
-    document.getElementById('logo-merah').src=document.getElementById('previewLogoMerah').src;
-  }
-
-  const fotoMerahFile=document.getElementById('inputFotoMerah').files[0];
-  if(fotoMerahFile){
-    localStorage.setItem('fotoMerah',document.getElementById('previewFotoMerah').src);
-    document.getElementById('foto-merah').src=document.getElementById('previewFotoMerah').src;
-  }
-
-  const fotoBiruFile=document.getElementById('inputFotoBiru').files[0];
-  if(fotoBiruFile){
-    localStorage.setItem('fotoBiru',document.getElementById('previewFotoBiru').src);
-    document.getElementById('foto-biru').src=document.getElementById('previewFotoBiru').src;
-  }
-
-  document.getElementById('judulKejuaraan').textContent=document.getElementById('inputKejuaraan').value;
-  document.getElementById('namaPerguruanTengah').textContent=document.getElementById('inputPerguruanTengah').value;
-  document.getElementById('judulBiru').textContent=document.getElementById('inputJudulBiru').value;
-  document.getElementById('judulMerah').textContent=document.getElementById('inputJudulMerah').value;
-  document.getElementById('nama-biru').textContent=document.getElementById('inputBiru').value;
-  document.getElementById('nama-merah').textContent=document.getElementById('inputMerah').value;
-  document.getElementById('perguruan-biru').textContent=document.getElementById('inputPerguruanBiru').value;
-  document.getElementById('perguruan-merah').textContent=document.getElementById('inputPerguruanMerah').value;
-
-  document.getElementById('namaJuri1').textContent=document.getElementById('inputJuri1').value||'Nama';
-  document.getElementById('namaJuri2').textContent=document.getElementById('inputJuri2').value||'Nama';
-  document.getElementById('namaJuri3').textContent=document.getElementById('inputJuri3').value||'Nama';
-  document.getElementById('namaJuri1b').textContent=document.getElementById('inputJuri1').value||'Nama';
-  document.getElementById('namaJuri2b').textContent=document.getElementById('inputJuri2').value||'Nama';
-  document.getElementById('namaJuri3b').textContent=document.getElementById('inputJuri3').value||'Nama';
-
-  alert('Disimpan! Semua data aman di HP kamu bro');
+  updateMode();
+  db.ref().update({
+    judulKejuaraan:document.getElementById('inputKejuaraan').value,
+    namaPerguruanTengah:document.getElementById('inputPerguruanTengah').value,
+    judulMerah:document.getElementById('inputJudulMerah').value,
+    judulBiru:document.getElementById('inputJudulBiru').value,
+    namaMerah:document.getElementById('inputMerah').value,
+    namaBiru:document.getElementById('inputBiru').value,
+    perguruanMerah:document.getElementById('inputPerguruanMerah').value,
+    perguruanBiru:document.getElementById('inputPerguruanBiru').value,
+    namaJuri1:document.getElementById('inputJuri1').value,
+    namaJuri2:document.getElementById('inputJuri2').value,
+    namaJuri3:document.getElementById('inputJuri3').value
+  });
+  alert('Disimpan ke Firebase!');
   document.getElementById('settingsPopup').style.display='none';
 }
 
-function addScore(warna, poin) {
-    if(warna === 'biru') {
-        scoreBiru += poin;
-        document.getElementById('score-biru').textContent = scoreBiru;
-    } else {
-        scoreMerah += poin;
-        document.getElementById('score-merah').textContent = scoreMerah;
-    }
+function addScore(warna,poin){
+  if(mode=='display')return;
+  if(warna=='biru')db.ref('scoreBiru').set(scoreBiru+poin);
+  else db.ref('scoreMerah').set(scoreMerah+poin);
 }
 
-function juriVote(warna, juri) {
-    let namaJuri = localStorage.getItem('namaJuri'+juri)||'Juri '+juri;
-    alert(namaJuri + ' vote untuk ' + warna.toUpperCase());
+function juriVote(warna,juri){
+  if(mode=='display')return;
+  let nama=localStorage.getItem('namaJuri'+juri)||'Juri '+juri;
+  alert(nama+' vote '+warna.toUpperCase());
 }
 
-function setBabak(n) {
-    babak = n;
-    document.querySelectorAll('.babak-btn').forEach(btn => btn.classList.remove('aktif'));
-    document.querySelectorAll('.babak-btn')[n-1].classList.add('aktif');
+function setBabak(n){
+  if(mode=='display')return;
+  db.ref('babak').set(n);
 }
 
-function startTimer() {
-    if(timerInterval) clearInterval(timerInterval);
-    detik = 120;
-    timerInterval = setInterval(() => {
-        detik--;
-        let m = Math.floor(detik/60).toString().padStart(2,'0');
-        let s = (detik%60).toString().padStart(2,'0');
-        document.getElementById('timer').textContent = m + ':' + s;
-        if(detik <= 0) clearInterval(timerInterval);
-    }, 1000);
+function startTimer(updateDB=true){
+  if(mode=='display')return;
+  if(updateDB)db.ref('timerJalan').set(true);
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    detik--;
+    db.ref('detik').set(detik);
+    if(detik<=0){clearInterval(timerInterval);db.ref('timerJalan').set(false)}
+  },1000);
 }
 
-function resetAll() {
-    scoreBiru = scoreMerah = 0;
-    detik = 120;
-    clearInterval(timerInterval);
-    document.getElementById('score-biru').textContent = 0;
-    document.getElementById('score-merah').textContent = 0;
-    document.getElementById('timer').textContent = '02:00';
+function resetAll(){
+  if(mode=='display')return;
+  db.ref().update({scoreBiru:0,scoreMerah:0,detik:120,timerJalan:false});
 }
 
-function kirimWA() {
-    let namaBiru = document.getElementById('nama-biru').textContent;
-    let namaMerah = document.getElementById('nama-merah').textContent;
-    let perguruanBiru = document.getElementById('perguruan-biru').textContent;
-    let perguruanMerah = document.getElementById('perguruan-merah').textContent;
-    let pesan = `Hasil Babak ${babak}%0A%0ABIRU: ${namaBiru} - ${perguruanBiru} - ${scoreBiru}%0AMERAH: ${namaMerah} - ${perguruanMerah} - ${scoreMerah}`;
-    window.open('https://wa.me/?text=' + pesan);
+function kirimWA(){
+  let pesan=`Hasil Babak ${babak}%0ABIRU: ${document.getElementById('nama-biru').textContent} - ${scoreBiru}%0AMERAH: ${document.getElementById('nama-merah').textContent} - ${scoreMerah}`;
+  window.open('https://wa.me/?text='+pesan);
 }
 </script>
 </body>
