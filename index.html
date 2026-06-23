@@ -3,42 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kejuaraan PSHT</title>
+<title>PSHT</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#000;color:#fff;height:100vh;overflow:hidden}
-.header{background:#6b21a8;text-align:center;padding:10px;font-size:24px;font-weight:bold}
+.header{background:#6b21a8;text-align:center;padding:10px;font-size:20px;font-weight:bold;display:flex;align-items:center;justify-content:center;gap:15px}
+.header img{height:40px}
 .container{display:flex;height:calc(100vh - 60px);gap:10px;padding:10px}
-.col{flex:1;display:flex;flex-direction:column;align-items:center;padding:20px;border-radius:15px;border:3px solid}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;padding:15px;border-radius:15px;border:3px solid}
 .biru{border-color:#3b82f6}
 .merah{border-color:#ef4444}
 .tengah{border-color:#a855f7}
-.title{font-size:32px;font-weight:900;margin-bottom:10px}
-.score{font-size:120px;font-weight:900;margin:20px 0}
-.btn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:90%;margin-top:10px}
-.btn{padding:15px;font-size:16px;border:none;border-radius:10px;cursor:pointer;background:#222;color:#fff;border:1px solid #555}
+.atlet-foto{width:120px;height:120px;border-radius:50%;border:3px solid #555;object-fit:cover;background:#222;margin-bottom:10px}
+.title{font-size:28px;font-weight:900;margin:5px 0}
+.perguruan{font-size:14px;color:#aaa;margin-bottom:10px;text-align:center}
+.score{font-size:100px;font-weight:900;margin:15px 0}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%;margin-top:10px}
+.btn{padding:15px;font-size:18px;border:none;border-radius:10px;cursor:pointer;background:#222;color:#fff;border:1px solid #555}
 .btn:active{background:#444}
-.timer{font-size:80px;font-weight:900;color:#ffd700;margin:20px 0}
-.babak-btn{width:90%;padding:15px;margin:8px 0;border:none;border-radius:10px;font-size:18px;font-weight:bold;cursor:pointer;background:#222;color:#fff;border:1px solid #555}
+.timer{font-size:70px;font-weight:900;color:#ffd700;margin:15px 0}
+.babak-btn{width:100%;padding:12px;margin:6px 0;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;background:#222;color:#fff;border:1px solid #555}
 .babak-btn.active{background:#7c3aed}
 .btn-mulai{background:#3b82f6}
 .btn-reset{background:#ef4444}
 .settings-btn{position:fixed;top:10px;right:10px;background:#222;border:2px solid #555;border-radius:50%;width:50px;height:50px;font-size:24px;cursor:pointer;z-index:1001}
-.settings-panel{position:fixed;top:70px;right:10px;background:#111;padding:20px;border-radius:15px;border:2px solid #333;z-index:1000;display:none;width:250px}
+.settings-panel{position:fixed;top:70px;right:10px;background:#111;padding:20px;border-radius:15px;border:2px solid #333;z-index:1000;display:none;width:300px;max-height:80vh;overflow-y:auto}
 .settings-panel.active{display:block}
-input{width:90%;padding:12px;margin:5px 0;background:#111;border:2px solid #444;border-radius:8px;color:#fff;font-size:16px;text-align:center}
+.settings-panel h3{margin:10px 0 5px 0;font-size:16px;color:#ffd700}
+input{width:100%;padding:10px;margin:5px 0;background:#222;border:2px solid #444;border-radius:8px;color:#fff;font-size:14px}
+input[type="file"]{font-size:12px}
+input[type="file"]::file-selector-button{padding:5px 10px;background:#3b82f6;border:none;border-radius:5px;color:#fff;cursor:pointer}
 .status{position:fixed;bottom:10px;left:10px;font-size:14px;color:#22c55e}
-.mode-display.settings-btn,.mode-display.settings-panel,.mode-display.btn,.mode-display input{display:none!important}
+.mode-display.settings-btn,.mode-display.btn,.mode-display input,.mode-display.perguruan{display:none!important}
+.mode-display.atlet-foto{width:200px;height:200px}
+.mode-display.score{font-size:180px}
 </style>
 </head>
 <body>
-<div class="header">KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN</div>
+<div class="header">
+  <img id="logoKiri" src="" alt="Logo">
+  <span id="judulPerguruan">KEJUARAAN PSHT HALMAHERA SELATAN</span>
+  <img id="logoKanan" src="" alt="Logo">
+</div>
 
 <div class="container">
   <div class="col biru">
-    <div class="title">BIRU</div>
+    <img class="atlet-foto" id="fotoBiru" src="https://via.placeholder.com/120" alt="Foto Biru">
+    <div class="title" id="namaBiru">ATLET BIRU</div>
+    <div class="perguruan" id="perguruanBiru">PERGURUAN BIRU</div>
     <div class="score" id="scoreBiru">0</div>
-    <input id="namaBiru" placeholder="NAMA ATLET BIRU" onblur="saveNama()">
     <div class="btn-grid">
       <button class="btn" onclick="addScore('biru',1)">+1</button>
       <button class="btn" onclick="addScore('biru',2)">+2</button>
@@ -56,9 +69,10 @@ input{width:90%;padding:12px;margin:5px 0;background:#111;border:2px solid #444;
   </div>
 
   <div class="col merah">
-    <div class="title">MERAH</div>
+    <img class="atlet-foto" id="fotoMerah" src="https://via.placeholder.com/120" alt="Foto Merah">
+    <div class="title" id="namaMerah">ATLET MERAH</div>
+    <div class="perguruan" id="perguruanMerah">PERGURUAN MERAH</div>
     <div class="score" id="scoreMerah">0</div>
-    <input id="namaMerah" placeholder="NAMA ATLET MERAH" onblur="saveNama()">
     <div class="btn-grid">
       <button class="btn" onclick="addScore('merah',1)">+1</button>
       <button class="btn" onclick="addScore('merah',2)">+2</button>
@@ -69,11 +83,28 @@ input{width:90%;padding:12px;margin:5px 0;background:#111;border:2px solid #444;
 
 <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
 <div class="settings-panel" id="settingsPanel">
-  <select id="modeSelect">
+  <h3>Mode</h3>
+  <select id="modeSelect" style="width:100%;padding:10px;background:#222;color:#fff;border-radius:8px">
     <option value="juri">MODE JURI</option>
     <option value="display">MODE DISPLAY</option>
   </select>
-  <button onclick="saveMode()">SIMPAN</button>
+
+  <h3>Judul & Logo</h3>
+  <input id="judulInput" placeholder="Nama Kejuaraan">
+  <input type="file" id="logoKiriInput" accept="image/*">
+  <input type="file" id="logoKananInput" accept="image/*">
+
+  <h3>Atlet Biru</h3>
+  <input id="inputNamaBiru" placeholder="Nama Atlet Biru">
+  <input id="inputPerguruanBiru" placeholder="Nama Perguruan Biru">
+  <input type="file" id="fotoBiruInput" accept="image/*">
+
+  <h3>Atlet Merah</h3>
+  <input id="inputNamaMerah" placeholder="Nama Atlet Merah">
+  <input id="inputPerguruanMerah" placeholder="Nama Perguruan Merah">
+  <input type="file" id="fotoMerahInput" accept="image/*">
+
+  <button onclick="saveAll()" style="width:100%;padding:12px;margin-top:10px;background:#22c55e;border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer">SIMPAN SEMUA</button>
 </div>
 
 <div class="status" id="status">Connecting...</div>
@@ -82,7 +113,9 @@ input{width:90%;padding:12px;margin:5px 0;background:#111;border:2px solid #444;
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getDatabase, ref, onValue, update, get, set } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-const app = initializeApp({databaseURL: "https://juri-silat-psht-by-4n4n9-default-rtdb.asia-southeast1.firebasedatabase.app/"});
+const app = initializeApp({
+  databaseURL: "https://juri-silat-psht-by-4n4n9-default-rtdb.asia-southeast1.firebasedatabase.app/"
+});
 const db = getDatabase(app);
 const dataRef = ref(db, 'match');
 
@@ -94,36 +127,45 @@ document.getElementById('modeSelect').value = mode;
 if(mode === 'display') document.body.classList.add('mode-display');
 
 window.toggleSettings = () => document.getElementById('settingsPanel').classList.toggle('active');
-window.saveMode = () => {localStorage.setItem('juriMode', document.getElementById('modeSelect').value); location.reload();}
 
-// AUTO BUAT DATA AWAL KALAU KOSONG
+// AUTO BUAT DATA AWAL
 async function initData() {
   const snap = await get(dataRef);
   if(!snap.exists()) {
     await set(dataRef, {
-      biru: 0,
-      merah: 0,
-      timer: 180,
-      babak: 1,
-      namaBiru: '',
-      namaMerah: ''
+      biru: 0, merah: 0, timer: 180, babak: 1,
+      namaBiru: 'ATLET BIRU', namaMerah: 'ATLET MERAH',
+      perguruanBiru: 'PERGURUAN BIRU', perguruanMerah: 'PERGURUAN MERAH',
+      judul: 'KEJUARAAN PSHT HALMAHERA SELATAN',
+      fotoBiru: 'https://via.placeholder.com/120',
+      fotoMerah: 'https://via.placeholder.com/120',
+      logoKiri: '', logoKanan: ''
     });
-    console.log('Data awal dibuat otomatis');
   }
 }
 initData();
 
+// LOAD REALTIME
 onValue(dataRef, (snap) => {
-  const d = snap.val() || {biru:0,merah:0,timer:180,babak:1,namaBiru:'',namaMerah:''};
+  const d = snap.val();
+  if(!d) return;
+
   document.getElementById('scoreBiru').textContent = d.biru;
   document.getElementById('scoreMerah').textContent = d.merah;
-  document.getElementById('namaBiru').value = d.namaBiru || '';
-  document.getElementById('namaMerah').value = d.namaMerah || '';
+  document.getElementById('namaBiru').textContent = d.namaBiru;
+  document.getElementById('namaMerah').textContent = d.namaMerah;
+  document.getElementById('perguruanBiru').textContent = d.perguruanBiru;
+  document.getElementById('perguruanMerah').textContent = d.perguruanMerah;
+  document.getElementById('judulPerguruan').textContent = d.judul;
+  document.getElementById('fotoBiru').src = d.fotoBiru;
+  document.getElementById('fotoMerah').src = d.fotoMerah;
+  if(d.logoKiri) document.getElementById('logoKiri').src = d.logoKiri;
+  if(d.logoKanan) document.getElementById('logoKanan').src = d.logoKanan;
+
   let m = Math.floor(d.timer/60);
   let s = d.timer%60;
   document.getElementById('timer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 
-  // Set tombol babak aktif
   document.querySelectorAll('.babak-btn').forEach((b,i) => {
     b.classList.remove('active');
     if(i === d.babak-1) b.classList.add('active');
@@ -132,12 +174,11 @@ onValue(dataRef, (snap) => {
   document.getElementById('status').textContent = '✓ Online';
 });
 
+// FUNGSI TOMBOL
 window.addScore = async (warna, nilai) => {
   const snap = await get(dataRef);
-  const d = snap.val() || {biru:0,merah:0};
-  let newScore = d[warna] + nilai;
-  if(newScore < 0) newScore = 0;
-  update(dataRef, {[warna]: newScore});
+  const d = snap.val();
+  update(dataRef, {[warna]: d[warna] + nilai});
 }
 
 window.toggleTimer = () => {
@@ -156,16 +197,48 @@ window.toggleTimer = () => {
 window.resetAll = () => {
   clearInterval(timerInterval);
   isRunning = false;
-  update(dataRef, {biru:0,merah:0,timer:180,babak:1});
+  update(dataRef, {biru:0, merah:0, timer:180, babak:1});
   document.getElementById('btnMulai').textContent = 'MULAI';
 }
 
 window.setBabak = (n) => update(dataRef, {babak: n});
-window.saveNama = () => {
-  update(dataRef, {
-    namaBiru: document.getElementById('namaBiru').value,
-    namaMerah: document.getElementById('namaMerah').value
-  });
+
+// SIMPAN SEMUA SETTING
+window.saveAll = async () => {
+  const updateData = {
+    namaBiru: document.getElementById('inputNamaBiru').value || 'ATLET BIRU',
+    namaMerah: document.getElementById('inputNamaMerah').value || 'ATLET MERAH',
+    perguruanBiru: document.getElementById('inputPerguruanBiru').value || 'PERGURUAN BIRU',
+    perguruanMerah: document.getElementById('inputPerguruanMerah').value || 'PERGURUAN MERAH',
+    judul: document.getElementById('judulInput').value || 'KEJUARAAN PSHT'
+  };
+
+  // Upload foto jadi base64
+  const uploadFile = (input) => {
+    return new Promise(resolve => {
+      if(input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result);
+        reader.readAsDataURL(input.files[0]);
+      } else resolve(null);
+    });
+  };
+
+  const fotoBiru = await uploadFile(document.getElementById('fotoBiruInput'));
+  const fotoMerah = await uploadFile(document.getElementById('fotoMerahInput'));
+  const logoKiri = await uploadFile(document.getElementById('logoKiriInput'));
+  const logoKanan = await uploadFile(document.getElementById('logoKananInput'));
+
+  if(fotoBiru) updateData.fotoBiru = fotoBiru;
+  if(fotoMerah) updateData.fotoMerah = fotoMerah;
+  if(logoKiri) updateData.logoKiri = logoKiri;
+  if(logoKanan) updateData.logoKanan = logoKanan;
+
+  await update(dataRef, updateData);
+
+  localStorage.setItem('juriMode', document.getElementById('modeSelect').value);
+  alert('Disimpan! Refresh halaman untuk mode Display');
+  location.reload();
 }
 </script>
 </body>
