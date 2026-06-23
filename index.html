@@ -80,7 +80,7 @@ input{width:90%;padding:12px;margin:5px 0;background:#111;border:2px solid #444;
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, onValue, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+import { getDatabase, ref, onValue, update, get, set } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
 const app = initializeApp({databaseURL: "https://juri-silat-psht-by-4n4n9-default-rtdb.asia-southeast1.firebasedatabase.app/"});
 const db = getDatabase(app);
@@ -96,20 +96,48 @@ if(mode === 'display') document.body.classList.add('mode-display');
 window.toggleSettings = () => document.getElementById('settingsPanel').classList.toggle('active');
 window.saveMode = () => {localStorage.setItem('juriMode', document.getElementById('modeSelect').value); location.reload();}
 
+// AUTO BUAT DATA AWAL KALAU KOSONG
+async function initData() {
+  const snap = await get(dataRef);
+  if(!snap.exists()) {
+    await set(dataRef, {
+      biru: 0,
+      merah: 0,
+      timer: 180,
+      babak: 1,
+      namaBiru: '',
+      namaMerah: ''
+    });
+    console.log('Data awal dibuat otomatis');
+  }
+}
+initData();
+
 onValue(dataRef, (snap) => {
-  const d = snap.val() || {biru:0,merah:0,timer:180,babak:1};
+  const d = snap.val() || {biru:0,merah:0,timer:180,babak:1,namaBiru:'',namaMerah:''};
   document.getElementById('scoreBiru').textContent = d.biru;
   document.getElementById('scoreMerah').textContent = d.merah;
+  document.getElementById('namaBiru').value = d.namaBiru || '';
+  document.getElementById('namaMerah').value = d.namaMerah || '';
   let m = Math.floor(d.timer/60);
   let s = d.timer%60;
   document.getElementById('timer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+
+  // Set tombol babak aktif
+  document.querySelectorAll('.babak-btn').forEach((b,i) => {
+    b.classList.remove('active');
+    if(i === d.babak-1) b.classList.add('active');
+  });
+
   document.getElementById('status').textContent = '✓ Online';
 });
 
 window.addScore = async (warna, nilai) => {
-  const snap = await get(ref(db, 'match'));
+  const snap = await get(dataRef);
   const d = snap.val() || {biru:0,merah:0};
-  update(dataRef, {[warna]: d[warna] + nilai});
+  let newScore = d[warna] + nilai;
+  if(newScore < 0) newScore = 0;
+  update(dataRef, {[warna]: newScore});
 }
 
 window.toggleTimer = () => {
@@ -117,7 +145,7 @@ window.toggleTimer = () => {
   document.getElementById('btnMulai').textContent = isRunning? 'PAUSE' : 'MULAI';
   if(isRunning) {
     timerInterval = setInterval(async () => {
-      const snap = await get(ref(db, 'match'));
+      const snap = await get(dataRef);
       let t = snap.val().timer;
       if(t > 0) update(dataRef, {timer: t - 1});
       else {clearInterval(timerInterval); isRunning = false; document.getElementById('btnMulai').textContent = 'MULAI';}
@@ -125,9 +153,20 @@ window.toggleTimer = () => {
   } else clearInterval(timerInterval);
 }
 
-window.resetAll = () => {clearInterval(timerInterval); isRunning = false; update(dataRef, {biru:0,merah:0,timer:180,babak:1}); document.getElementById('btnMulai').textContent = 'MULAI';}
+window.resetAll = () => {
+  clearInterval(timerInterval);
+  isRunning = false;
+  update(dataRef, {biru:0,merah:0,timer:180,babak:1});
+  document.getElementById('btnMulai').textContent = 'MULAI';
+}
+
 window.setBabak = (n) => update(dataRef, {babak: n});
-window.saveNama = () => {};
+window.saveNama = () => {
+  update(dataRef, {
+    namaBiru: document.getElementById('namaBiru').value,
+    namaMerah: document.getElementById('namaMerah').value
+  });
+}
 </script>
 </body>
 </html>
