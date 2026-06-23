@@ -17,7 +17,6 @@ body{background:#0a0a0a;color:#fff;overflow:hidden;height:100vh}
 .title{font-size:3vw;font-weight:900;margin-bottom:1vh;text-shadow:0 0 15px currentColor}
 .circle{width:10vw;height:10vw;border-radius:50%;border:4px solid #fff;margin:1vh 0}
 .score{font-size:12vw;font-weight:900;line-height:1;margin:1vh 0;text-shadow:0 0 20px #fff}
-.info{font-size:1.2vw;text-align:center;margin:0.5vh 0;color:#ccc}
 .btn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.6vh;width:90%;margin-top:0.8vh}
 .btn{padding:1.2vh;font-size:0.9vw;border:none;border-radius:10px;cursor:pointer;background:#1e1e1e;color:#fff;border:1px solid #444}
 .btn:active{transform:scale(0.95);background:#333}
@@ -28,8 +27,6 @@ body{background:#0a0a0a;color:#fff;overflow:hidden;height:100vh}
 .btn-mulai{background:#3b82f6;border-color:#3b82f6}
 .btn-reset{background:#ef4444;border-color:#ef4444}
 .btn-wa{background:#22c55e;border-color:#22c55e}
-
-/* SETTINGS */
 .settings-btn{position:fixed;top:1vh;right:1vw;background:#1a1a1a;border:2px solid #444;border-radius:50%;width:5vw;height:5vw;font-size:2.5vw;cursor:pointer;z-index:1001}
 .settings-panel{position:fixed;top:7vh;right:1vw;background:#111;padding:2vh;border-radius:15px;border:2px solid #333;z-index:1000;display:none;width:25vw}
 .settings-panel.active{display:block}
@@ -47,7 +44,6 @@ input{width:90%;padding:1.2vh;margin:0.6vh 0;background:#1a1a1a;border:2px solid
 </div>
 
 <div class="container">
-  <!-- KOLOM BIRU -->
   <div class="col biru">
     <div class="title">BIRU</div>
     <div class="circle" style="border-color:#3b82f6"></div>
@@ -58,13 +54,12 @@ input{width:90%;padding:1.2vh;margin:0.6vh 0;background:#1a1a1a;border:2px solid
       <button class="btn" onclick="addScore('biru',1)">Serangan<br>Tangan</button>
       <button class="btn" onclick="addScore('biru',2)">Tendangan</button>
       <button class="btn" onclick="addScore('biru',3)">Bantingan</button>
-      <button class="btn" onclick="addScore('biru',-1)">JURI 1<br><small id="j1b">0</small></button>
-      <button class="btn" onclick="addScore('biru',-2)">JURI 2<br><small id="j2b">0</small></button>
-      <button class="btn" onclick="addScore('biru',-3)">JURI 3<br><small id="j3b">0</small></button>
+      <button class="btn" onclick="addJuri('biru',1)">JURI 1<br><small id="j1b">0</small></button>
+      <button class="btn" onclick="addJuri('biru',2)">JURI 2<br><small id="j2b">0</small></button>
+      <button class="btn" onclick="addJuri('biru',3)">JURI 3<br><small id="j3b">0</small></button>
     </div>
   </div>
 
-  <!-- KOLOM TENGAH -->
   <div class="col tengah">
     <div class="circle" style="border-color:#a855f7"></div>
     <div style="font-size:1.5vw;color:#a855f7;font-weight:bold">PSHT TERATE</div>
@@ -79,7 +74,6 @@ input{width:90%;padding:1.2vh;margin:0.6vh 0;background:#1a1a1a;border:2px solid
     <button class="babak-btn btn-wa" onclick="kirimWA()">KIRIM WA</button>
   </div>
 
-  <!-- KOLOM MERAH -->
   <div class="col merah">
     <div class="title">MERAH</div>
     <div class="circle" style="border-color:#ef4444"></div>
@@ -90,9 +84,9 @@ input{width:90%;padding:1.2vh;margin:0.6vh 0;background:#1a1a1a;border:2px solid
       <button class="btn" onclick="addScore('merah',1)">Serangan<br>Tangan</button>
       <button class="btn" onclick="addScore('merah',2)">Tendangan</button>
       <button class="btn" onclick="addScore('merah',3)">Bantingan</button>
-      <button class="btn" onclick="addScore('merah',-1)">JURI 1<br><small id="j1m">0</small></button>
-      <button class="btn" onclick="addScore('merah',-2)">JURI 2<br><small id="j2m">0</small></button>
-      <button class="btn" onclick="addScore('merah',-3)">JURI 3<br><small id="j3m">0</small></button>
+      <button class="btn" onclick="addJuri('merah',1)">JURI 1<br><small id="j1m">0</small></button>
+      <button class="btn" onclick="addJuri('merah',2)">JURI 2<br><small id="j2m">0</small></button>
+      <button class="btn" onclick="addJuri('merah',3)">JURI 3<br><small id="j3m">0</small></button>
     </div>
   </div>
 </div>
@@ -111,16 +105,15 @@ input{width:90%;padding:1.2vh;margin:0.6vh 0;background:#1a1a1a;border:2px solid
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getDatabase, ref, onValue, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+import { getDatabase, ref, onValue, update, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
 const app = initializeApp({databaseURL: "https://juri-silat-psht-by-4n4n9-default-rtdb.asia-southeast1.firebasedatabase.app/"});
 const db = getDatabase(app);
 const dataRef = ref(db, 'match');
 
 let mode = localStorage.getItem('juriMode') || 'juri';
-let timerInterval;
+let timerInterval = null;
 let isRunning = false;
-let currentTimer = 180;
 
 document.getElementById('modeSelect').value = mode;
 applyMode();
@@ -160,27 +153,26 @@ onValue(dataRef, (snap) => {
   document.getElementById('namaMerah').value = d.namaMerah || '';
   document.getElementById('perguruanBiru').value = d.perguruanBiru || '';
   document.getElementById('perguruanMerah').value = d.perguruanMerah || '';
-  currentTimer = d.timer || 180;
-  updateTimerDisplay(currentTimer);
+  updateTimerDisplay(d.timer);
   setBabakUI(d.babak);
   document.getElementById('status').textContent = '✓ Online';
 });
 
-window.addScore = function(warna, nilai) {
-  onValue(dataRef, (snap) => {
-    const d = snap.val() || {biru:0,merah:0,j1b:0,j2b:0,j3b:0,j1m:0,j2m:0,j3m:0};
-    if(nilai > 0) {
-      // Tombol serangan/tendangan/bantingan nambah total
-      d[warna] = d[warna] + nilai;
-    } else {
-      // Tombol juri ngurangin total + nambah hitungan juri
-      d[warna] = d[warna] - nilai;
-      if(d[warna] < 0) d[warna] = 0;
-      let juriKey = 'j' + Math.abs(nilai) + warna.charAt(0);
-      d[juriKey] = d[juriKey] + 1;
-    }
-    update(dataRef, d);
-  }, {onlyOnce: true});
+window.addScore = async function(warna, nilai) {
+  const snap = await get(dataRef);
+  const d = snap.val() || {biru:0,merah:0};
+  let newScore = d[warna] + nilai;
+  if(newScore < 0) newScore = 0;
+  update(dataRef, {[warna]: newScore});
+}
+
+window.addJuri = async function(warna, juriNo) {
+  const snap = await get(dataRef);
+  const d = snap.val() || {biru:0,merah:0,j1b:0,j2b:0,j3b:0,j1m:0,j2m:0,j3m:0};
+  d[warna] = d[warna] + 1; // nambah total score
+  let juriKey = 'j' + juriNo + warna.charAt(0);
+  d[juriKey] = d[juriKey] + 1; // nambah hitungan juri
+  update(dataRef, d);
 }
 
 window.saveNama = function() {
@@ -204,19 +196,22 @@ function setBabakUI(n) {
   });
 }
 
-window.toggleTimer = function() {
-  isRunning =!isRunning; // BENERIN TYPO DISINI
+window.toggleTimer = async function() {
+  isRunning =!isRunning; // INI YANG BENER BRO, ADA SPASI
   document.getElementById('btnMulai').textContent = isRunning? 'PAUSE' : 'MULAI';
+
   if(isRunning) {
-    timerInterval = setInterval(() => {
-      currentTimer--;
-      if(currentTimer <= 0) {
-        currentTimer = 0;
+    timerInterval = setInterval(async () => {
+      const snap = await get(dataRef);
+      let t = snap.val().timer || 180;
+      t = t - 1;
+      if(t <= 0) {
+        t = 0;
         clearInterval(timerInterval);
         isRunning = false;
         document.getElementById('btnMulai').textContent = 'MULAI';
       }
-      update(dataRef, {timer: currentTimer});
+      update(dataRef, {timer: t});
     }, 1000);
   } else {
     clearInterval(timerInterval);
@@ -229,19 +224,19 @@ function updateTimerDisplay(sec) {
   document.getElementById('timer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 }
 
-window.resetAll = function() {
+window.resetAll = async function() {
   if(confirm('Reset semua?')) {
     clearInterval(timerInterval);
     isRunning = false;
-    currentTimer = 180;
     update(dataRef, {biru:0,merah:0,timer:180,babak:1,j1b:0,j2b:0,j3b:0,j1m:0,j2m:0,j3m:0});
     document.getElementById('btnMulai').textContent = 'MULAI';
   }
 }
 
 window.kirimWA = function() {
-  const d = document.getElementById('scoreBiru').textContent + '-' + document.getElementById('scoreMerah').textContent;
-  const text = `Hasil PSHT: Biru ${document.getElementById('namaBiru').value} vs Merah ${document.getElementById('namaMerah').value} = ${d}`;
+  const biru = document.getElementById('scoreBiru').textContent;
+  const merah = document.getElementById('scoreMerah').textContent;
+  const text = `Hasil PSHT: Biru ${document.getElementById('namaBiru').value} vs Merah ${document.getElementById('namaMerah').value} = ${biru}-${merah}`;
   window.open('https://wa.me/?text=' + encodeURIComponent(text));
 }
 </script>
