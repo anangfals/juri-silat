@@ -16,24 +16,25 @@ body{background:#0a0a0a;color:#fff;overflow:hidden;height:100vh}
 .col.tengah{border-color:#a855f7;box-shadow:0 0 20px #a855f7}
 .title{font-size:3vw;font-weight:900;margin-bottom:1vh;text-shadow:0 0 15px currentColor}
 .circle{width:10vw;height:10vw;border-radius:50%;border:4px solid #fff;margin:1vh 0}
-.score{font-size:12vw;font-weight:900;line-height:1;margin:2vh 0;text-shadow:0 0 20px #fff}
+.score{font-size:12vw;font-weight:900;line-height:1;margin:1vh 0;text-shadow:0 0 20px #fff}
 .info{font-size:1.2vw;text-align:center;margin:0.5vh 0;color:#ccc}
-.btn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8vh;width:90%;margin-top:1vh}
-.btn{padding:1.5vh;font-size:1vw;border:none;border-radius:10px;cursor:pointer;background:#1e1e1e;color:#fff;border:1px solid #444}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.6vh;width:90%;margin-top:0.8vh}
+.btn{padding:1.2vh;font-size:0.9vw;border:none;border-radius:10px;cursor:pointer;background:#1e1e1e;color:#fff;border:1px solid #444}
 .btn:active{transform:scale(0.95);background:#333}
-.timer{font-size:7vw;font-weight:900;color:#ffd700;text-shadow:0 0 20px #ffd700;margin:2vh 0}
-.babak-btn{width:90%;padding:1.5vh;margin:0.8vh 0;border:none;border-radius:10px;font-size:1.5vw;font-weight:bold;cursor:pointer;background:#222;color:#fff;border:1px solid #555}
+.btn small{font-size:0.7vw;color:#aaa}
+.timer{font-size:7vw;font-weight:900;color:#ffd700;text-shadow:0 0 20px #ffd700;margin:1.5vh 0}
+.babak-btn{width:90%;padding:1.2vh;margin:0.6vh 0;border:none;border-radius:10px;font-size:1.3vw;font-weight:bold;cursor:pointer;background:#222;color:#fff;border:1px solid #555}
 .babak-btn.active{background:linear-gradient(90deg,#7c3aed,#a855f7);border-color:#a855f7}
 .btn-mulai{background:#3b82f6;border-color:#3b82f6}
 .btn-reset{background:#ef4444;border-color:#ef4444}
 .btn-wa{background:#22c55e;border-color:#22c55e}
 
-/* SETTINGS MENU */
+/* SETTINGS */
 .settings-btn{position:fixed;top:1vh;right:1vw;background:#1a1a1a;border:2px solid #444;border-radius:50%;width:5vw;height:5vw;font-size:2.5vw;cursor:pointer;z-index:1001}
 .settings-panel{position:fixed;top:7vh;right:1vw;background:#111;padding:2vh;border-radius:15px;border:2px solid #333;z-index:1000;display:none;width:25vw}
 .settings-panel.active{display:block}
 .settings-panel select,.settings-panel button{width:100%;padding:1.2vh;font-size:1.2vw;margin-top:1vh;background:#222;color:#fff;border:1px solid #555;border-radius:8px;cursor:pointer}
-input{width:90%;padding:1.2vh;margin:0.8vh 0;background:#1a1a1a;border:2px solid #444;border-radius:8px;color:#fff;font-size:1.2vw;text-align:center}
+input{width:90%;padding:1.2vh;margin:0.6vh 0;background:#1a1a1a;border:2px solid #444;border-radius:8px;color:#fff;font-size:1.1vw;text-align:center}
 .status{position:fixed;bottom:1vh;left:1vw;font-size:1.2vw;color:#22c55e}
 .mode-display.settings-btn,.mode-display.settings-panel{display:none!important}
 .mode-display.btn,.mode-display input{display:none!important}
@@ -57,6 +58,9 @@ input{width:90%;padding:1.2vh;margin:0.8vh 0;background:#1a1a1a;border:2px solid
       <button class="btn" onclick="addScore('biru',1)">Serangan<br>Tangan</button>
       <button class="btn" onclick="addScore('biru',2)">Tendangan</button>
       <button class="btn" onclick="addScore('biru',3)">Bantingan</button>
+      <button class="btn" onclick="addScore('biru',-1)">JURI 1<br><small id="j1b">0</small></button>
+      <button class="btn" onclick="addScore('biru',-2)">JURI 2<br><small id="j2b">0</small></button>
+      <button class="btn" onclick="addScore('biru',-3)">JURI 3<br><small id="j3b">0</small></button>
     </div>
   </div>
 
@@ -70,7 +74,7 @@ input{width:90%;padding:1.2vh;margin:0.8vh 0;background:#1a1a1a;border:2px solid
     <button class="babak-btn active" onclick="setBabak(1)">BABAK 1</button>
     <button class="babak-btn" onclick="setBabak(2)">BABAK 2</button>
     <button class="babak-btn" onclick="setBabak(3)">BABAK 3</button>
-    <button class="babak-btn btn-mulai" onclick="toggleTimer()">MULAI</button>
+    <button class="babak-btn btn-mulai" id="btnMulai" onclick="toggleTimer()">MULAI</button>
     <button class="babak-btn btn-reset" onclick="resetAll()">RESET</button>
     <button class="babak-btn btn-wa" onclick="kirimWA()">KIRIM WA</button>
   </div>
@@ -86,11 +90,13 @@ input{width:90%;padding:1.2vh;margin:0.8vh 0;background:#1a1a1a;border:2px solid
       <button class="btn" onclick="addScore('merah',1)">Serangan<br>Tangan</button>
       <button class="btn" onclick="addScore('merah',2)">Tendangan</button>
       <button class="btn" onclick="addScore('merah',3)">Bantingan</button>
+      <button class="btn" onclick="addScore('merah',-1)">JURI 1<br><small id="j1m">0</small></button>
+      <button class="btn" onclick="addScore('merah',-2)">JURI 2<br><small id="j2m">0</small></button>
+      <button class="btn" onclick="addScore('merah',-3)">JURI 3<br><small id="j3m">0</small></button>
     </div>
   </div>
 </div>
 
-<!-- TOMBOL SETTINGS -->
 <button class="settings-btn" onclick="toggleSettings()">⚙️</button>
 <div class="settings-panel" id="settingsPanel">
   <label style="font-size:1.5vw">Pilih Mode HP:</label>
@@ -114,6 +120,7 @@ const dataRef = ref(db, 'match');
 let mode = localStorage.getItem('juriMode') || 'juri';
 let timerInterval;
 let isRunning = false;
+let currentTimer = 180;
 
 document.getElementById('modeSelect').value = mode;
 applyMode();
@@ -140,24 +147,39 @@ window.saveMode = function() {
 
 // Load data realtime
 onValue(dataRef, (snap) => {
-  const d = snap.val() || {biru:0,merah:0,babak:1,timer:180,namaBiru:'',namaMerah:'',perguruanBiru:'',perguruanMerah:''};
+  const d = snap.val() || {biru:0,merah:0,babak:1,timer:180,j1b:0,j2b:0,j3b:0,j1m:0,j2m:0,j3m:0,namaBiru:'',namaMerah:'',perguruanBiru:'',perguruanMerah:''};
   document.getElementById('scoreBiru').textContent = d.biru;
   document.getElementById('scoreMerah').textContent = d.merah;
+  document.getElementById('j1b').textContent = d.j1b;
+  document.getElementById('j2b').textContent = d.j2b;
+  document.getElementById('j3b').textContent = d.j3b;
+  document.getElementById('j1m').textContent = d.j1m;
+  document.getElementById('j2m').textContent = d.j2m;
+  document.getElementById('j3m').textContent = d.j3m;
   document.getElementById('namaBiru').value = d.namaBiru || '';
   document.getElementById('namaMerah').value = d.namaMerah || '';
   document.getElementById('perguruanBiru').value = d.perguruanBiru || '';
   document.getElementById('perguruanMerah').value = d.perguruanMerah || '';
-  updateTimerDisplay(d.timer);
+  currentTimer = d.timer || 180;
+  updateTimerDisplay(currentTimer);
   setBabakUI(d.babak);
   document.getElementById('status').textContent = '✓ Online';
 });
 
 window.addScore = function(warna, nilai) {
   onValue(dataRef, (snap) => {
-    const d = snap.val() || {biru:0,merah:0};
-    let newScore = d[warna] + nilai;
-    if(newScore < 0) newScore = 0;
-    update(dataRef, {[warna]: newScore});
+    const d = snap.val() || {biru:0,merah:0,j1b:0,j2b:0,j3b:0,j1m:0,j2m:0,j3m:0};
+    if(nilai > 0) {
+      // Tombol serangan/tendangan/bantingan nambah total
+      d[warna] = d[warna] + nilai;
+    } else {
+      // Tombol juri ngurangin total + nambah hitungan juri
+      d[warna] = d[warna] - nilai;
+      if(d[warna] < 0) d[warna] = 0;
+      let juriKey = 'j' + Math.abs(nilai) + warna.charAt(0);
+      d[juriKey] = d[juriKey] + 1;
+    }
+    update(dataRef, d);
   }, {onlyOnce: true});
 }
 
@@ -183,18 +205,22 @@ function setBabakUI(n) {
 }
 
 window.toggleTimer = function() {
-  isRunning =!isRunning;
-  document.querySelector('.btn-mulai').textContent = isRunning? 'PAUSE' : 'MULAI';
+  isRunning =!isRunning; // BENERIN TYPO DISINI
+  document.getElementById('btnMulai').textContent = isRunning? 'PAUSE' : 'MULAI';
   if(isRunning) {
     timerInterval = setInterval(() => {
-      onValue(dataRef, (snap) => {
-        let t = snap.val().timer || 180;
-        t = t - 1;
-        if(t < 0) {t = 0; clearInterval(timerInterval); isRunning = false;}
-        update(dataRef, {timer: t});
-      }, {onlyOnce: true});
+      currentTimer--;
+      if(currentTimer <= 0) {
+        currentTimer = 0;
+        clearInterval(timerInterval);
+        isRunning = false;
+        document.getElementById('btnMulai').textContent = 'MULAI';
+      }
+      update(dataRef, {timer: currentTimer});
     }, 1000);
-  } else clearInterval(timerInterval);
+  } else {
+    clearInterval(timerInterval);
+  }
 }
 
 function updateTimerDisplay(sec) {
@@ -207,8 +233,9 @@ window.resetAll = function() {
   if(confirm('Reset semua?')) {
     clearInterval(timerInterval);
     isRunning = false;
-    update(dataRef, {biru:0,merah:0,timer:180,babak:1});
-    document.querySelector('.btn-mulai').textContent = 'MULAI';
+    currentTimer = 180;
+    update(dataRef, {biru:0,merah:0,timer:180,babak:1,j1b:0,j2b:0,j3b:0,j1m:0,j2m:0,j3m:0});
+    document.getElementById('btnMulai').textContent = 'MULAI';
   }
 }
 
