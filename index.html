@@ -14,6 +14,16 @@ body{background:#000;color:#fff;height:100vh;overflow:hidden}
 .biru{border-color:#3b82f6}
 .merah{border-color:#ef4444}
 .tengah{border-color:#a855f7}
+
+.label-warna{
+  font-size:22px;
+  font-weight:900;
+  margin-bottom:8px;
+  letter-spacing:3px;
+}
+.biru.label-warna{color:#3b82f6}
+.merah.label-warna{color:#ef4444}
+
 .atlet-foto{width:120px;height:120px;border-radius:50%;border:3px solid #555;object-fit:cover;background:#222;margin-bottom:10px}
 .title{font-size:28px;font-weight:900;margin:5px 0}
 .perguruan{font-size:14px;color:#aaa;margin-bottom:10px;text-align:center}
@@ -34,9 +44,11 @@ input{width:100%;padding:10px;margin:5px 0;background:#222;border:2px solid #444
 input[type="file"]{font-size:12px}
 input[type="file"]::file-selector-button{padding:5px 10px;background:#3b82f6;border:none;border-radius:5px;color:#fff;cursor:pointer}
 .status{position:fixed;bottom:10px;left:10px;font-size:14px;color:#22c55e}
+
 .mode-display.settings-btn,.mode-display.btn,.mode-display input,.mode-display.perguruan{display:none!important}
 .mode-display.atlet-foto{width:200px;height:200px}
 .mode-display.score{font-size:180px}
+.mode-display.label-warna{font-size:36px;letter-spacing:5px}
 </style>
 </head>
 <body>
@@ -48,6 +60,7 @@ input[type="file"]::file-selector-button{padding:5px 10px;background:#3b82f6;bor
 
 <div class="container">
   <div class="col biru">
+    <div class="label-warna">BIRU</div>
     <img class="atlet-foto" id="fotoBiru" src="https://via.placeholder.com/120" alt="Foto Biru">
     <div class="title" id="namaBiru">ATLET BIRU</div>
     <div class="perguruan" id="perguruanBiru">PERGURUAN BIRU</div>
@@ -69,6 +82,7 @@ input[type="file"]::file-selector-button{padding:5px 10px;background:#3b82f6;bor
   </div>
 
   <div class="col merah">
+    <div class="label-warna">MERAH</div>
     <img class="atlet-foto" id="fotoMerah" src="https://via.placeholder.com/120" alt="Foto Merah">
     <div class="title" id="namaMerah">ATLET MERAH</div>
     <div class="perguruan" id="perguruanMerah">PERGURUAN MERAH</div>
@@ -128,7 +142,6 @@ if(mode === 'display') document.body.classList.add('mode-display');
 
 window.toggleSettings = () => document.getElementById('settingsPanel').classList.toggle('active');
 
-// AUTO BUAT DATA AWAL
 async function initData() {
   const snap = await get(dataRef);
   if(!snap.exists()) {
@@ -145,7 +158,6 @@ async function initData() {
 }
 initData();
 
-// LOAD REALTIME
 onValue(dataRef, (snap) => {
   const d = snap.val();
   if(!d) return;
@@ -174,7 +186,6 @@ onValue(dataRef, (snap) => {
   document.getElementById('status').textContent = '✓ Online';
 });
 
-// FUNGSI TOMBOL
 window.addScore = async (warna, nilai) => {
   const snap = await get(dataRef);
   const d = snap.val();
@@ -203,7 +214,6 @@ window.resetAll = () => {
 
 window.setBabak = (n) => update(dataRef, {babak: n});
 
-// SIMPAN SEMUA SETTING
 window.saveAll = async () => {
   const updateData = {
     namaBiru: document.getElementById('inputNamaBiru').value || 'ATLET BIRU',
@@ -213,7 +223,6 @@ window.saveAll = async () => {
     judul: document.getElementById('judulInput').value || 'KEJUARAAN PSHT'
   };
 
-  // Upload foto jadi base64
   const uploadFile = (input) => {
     return new Promise(resolve => {
       if(input.files[0]) {
@@ -235,7 +244,6 @@ window.saveAll = async () => {
   if(logoKanan) updateData.logoKanan = logoKanan;
 
   await update(dataRef, updateData);
-
   localStorage.setItem('juriMode', document.getElementById('modeSelect').value);
   alert('Disimpan! Refresh halaman untuk mode Display');
   location.reload();
