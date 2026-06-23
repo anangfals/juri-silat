@@ -3,147 +3,207 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Juri Silat PSHT Realtime</title>
+<title>Kejuaraan PSHT</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-  body{background:#0a0a0a;color:#fff;overflow-x:hidden}
- .container{max-width:900px;margin:0 auto;padding:20px}
-  h1{text-align:center;font-size:2.5rem;margin-bottom:10px;background:linear-gradient(90deg,#ff6b6b,#ffd93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
- .subtitle{text-align:center;color:#888;margin-bottom:30px}
- .settings{position:fixed;top:20px;right:20px;background:#1a1a1a;padding:15px;border-radius:10px;border:1px solid #333;z-index:1000}
- .settings select,.settings button{width:100%;padding:8px;margin-top:8px;background:#2a2a2a;color:#fff;border:1px solid #444;border-radius:5px}
- .mode-display.settings{display:none}
- .score-board{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;margin-top:50px}
- .corner{background:linear-gradient(135deg,#1e3a8a,#3b82f6);padding:30px;border-radius:20px;text-align:center;border:3px solid #60a5fa}
- .corner.merah{background:linear-gradient(135deg,#7f1d1d,#dc2626);border-color:#f87171}
- .label{font-size:1.5rem;font-weight:bold;margin-bottom:15px}
- .score{font-size:8rem;font-weight:900;line-height:1}
- .buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
- .btn{padding:20px;font-size:2rem;font-weight:bold;border:none;border-radius:15px;cursor:pointer;transition:0.2s}
- .btn:active{transform:scale(0.95)}
- .btn-plus{background:#22c55e;color:#fff}
- .btn-minus{background:#ef4444;color:#fff}
- .vs{font-size:4rem;font-weight:900;color:#ffd93d}
- .controls{text-align:center;margin-top:40px}
- .btn-reset{background:#f59e0b;color:#000;padding:15px 40px;font-size:1.2rem;border:none;border-radius:10px;cursor:pointer;font-weight:bold}
- .status{position:fixed;bottom:20px;left:20px;font-size:0.9rem;color:#22c55e}
- .mode-display.btn{display:none}
-  @media(max-width:768px){.score{font-size:5rem}.vs{font-size:2.5rem}.score-board{gap:10px}}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#0a0a0a;color:#fff;overflow:hidden;height:100vh}
+.header{background:linear-gradient(90deg,#6b21a8,#a855f7);text-align:center;padding:1.5vh;font-size:2.5vw;font-weight:bold}
+.header small{display:block;font-size:1.2vw;margin-top:0.5vh}
+.container{display:flex;height:calc(100vh - 10vh);gap:1vw;padding:1vw}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;padding:2vh;border-radius:20px;border:3px solid}
+.col.biru{border-color:#3b82f6;box-shadow:0 30px #3b82f6}
+.col.merah{border-color:#ef4444;box-shadow:0 0 30px #ef4444}
+.col.tengah{border-color:#a855f7;box-shadow:0 0 30px #a855f7}
+.title{font-size:4vw;font-weight:900;margin-bottom:2vh;text-shadow:0 0 20px currentColor}
+.circle{width:15vw;height:15vw;border-radius:50%;border:6px solid #fff;margin:2vh 0;box-shadow:0 0 30px #fff}
+.score{font-size:18vw;font-weight:900;line-height:1;margin:3vh 0;text-shadow:0 0 30px #fff}
+.info{font-size:1.5vw;text-align:center;margin:1vh 0;color:#ccc}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1vh;width:90%;margin-top:2vh}
+.btn{padding:2vh;font-size:1.3vw;border:none;border-radius:12px;cursor:pointer;background:#1e1e1e;color:#fff;border:2px solid #444;transition:0.1s}
+.btn:active{transform:scale(0.95);background:#333}
+.timer{font-size:10vw;font-weight:900;color:#ffd700;text-shadow:0 0 30px #ffd700;margin:3vh 0}
+.babak-btn{width:90%;padding:2vh;margin:1vh 0;border:none;border-radius:12px;font-size:2vw;font-weight:bold;cursor:pointer;background:#222;color:#fff;border:2px solid #555}
+.babak-btn.active{background:linear-gradient(90deg,#7c3aed,#a855f7);border-color:#a855f7}
+.btn-mulai{background:#3b82f6;border-color:#3b82f6}
+.btn-reset{background:#ef4444;border-color:#ef4444}
+.btn-wa{background:#22c55e;border-color:#22c55e}
+.settings{position:fixed;top:2vh;right:2vw;background:#111;padding:2vh;border-radius:15px;border:2px solid #333;z-index:1000}
+.settings select,.settings button{width:100%;padding:1.5vh;font-size:1.5vw;margin-top:1vh;background:#222;color:#fff;border:1px solid #555;border-radius:8px;cursor:pointer}
+.mode-display.settings,.mode-display.btn{display:none!important}
+.status{position:fixed;bottom:2vh;left:2vw;font-size:1.5vw;color:#22c55e}
+input{width:90%;padding:1.5vh;margin:1vh 0;background:#1a1a1a;border:2px solid #444;border-radius:8px;color:#fff;font-size:1.5vw;text-align:center}
 </style>
 </head>
 <body>
+<div class="header">
+  KEJUARAAN PENCAT SILAT PSHT HALMAHERA SELATAN
+  <small>2026</small>
+</div>
+
 <div class="container">
-  <h1>JURI SILAT PSHT</h1>
-  <div class="subtitle">Realtime Scoreboard - 3 Juri + 1 Display</div>
-
-  <div class="settings">
-    <label>Pilih Mode HP:</label>
-    <select id="modeSelect">
-      <option value="juri1">MODE JURI 1 - Merah</option>
-      <option value="juri2">MODE JURI 2 - Biru</option>
-      <option value="juri3">MODE JURI 3 - Merah</option>
-      <option value="display">MODE DISPLAY/LAYAR</option>
-    </select>
-    <button onclick="saveMode()">SIMPAN MODE</button>
-  </div>
-
-  <div class="score-board">
-    <div class="corner merah">
-      <div class="label">MERAH</div>
-      <div class="score" id="scoreMerah">0</div>
-      <div class="buttons" id="btnMerah">
-        <button class="btn btn-plus" onclick="addScore('merah',1)">+1</button>
-        <button class="btn btn-minus" onclick="addScore('merah',-1)">-1</button>
-      </div>
-    </div>
-
-    <div class="vs">VS</div>
-
-    <div class="corner">
-      <div class="label">BIRU</div>
-      <div class="score" id="scoreBiru">0</div>
-      <div class="buttons" id="btnBiru">
-        <button class="btn btn-plus" onclick="addScore('biru',1)">+1</button>
-        <button class="btn btn-minus" onclick="addScore('biru',-1)">-1</button>
-      </div>
+  <!-- KOLOM BIRU -->
+  <div class="col biru">
+    <div class="title">BIRU</div>
+    <div class="circle" style="border-color:#3b82f6;box-shadow:0 0 30px #3b82f6"></div>
+    <div class="score" id="scoreBiru">0</div>
+    <input type="text" id="namaBiru" placeholder="NAMA ATLET BIRU" onblur="saveNama()">
+    <input type="text" id="perguruanBiru" placeholder="NAMA PERGURUAN BIRU" onblur="saveNama()">
+    <div class="btn-grid">
+      <button class="btn" onclick="addScore('biru',1)">Serangan<br>Tangan</button>
+      <button class="btn" onclick="addScore('biru',2)">Tendangan</button>
+      <button class="btn" onclick="addScore('biru',3)">Bantingan</button>
+      <button class="btn" onclick="addScore('biru',-1)">JURI 1<br><small id="j1b">0</small></button>
+      <button class="btn" onclick="addScore('biru',-2)">JURI 2<br><small id="j2b">0</small></button>
+      <button class="btn" onclick="addScore('biru',-3)">JURI 3<br><small id="j3b">0</small></button>
     </div>
   </div>
 
-  <div class="controls">
-    <button class="btn-reset" onclick="resetScore()">RESET SCORE</button>
+  <!-- KOLOM TENGAH -->
+  <div class="col tengah">
+    <div class="circle" style="border-color:#a855f7;box-shadow:0 0 30px #a855f7"></div>
+    <div style="font-size:2vw;color:#a855f7;font-weight:bold">PSHT TERATE</div>
+    <div style="font-size:1.5vw;margin:1vh 0">TIMER</div>
+    <div class="timer" id="timer">03:00</div>
+    <div style="font-size:1.5vw">BABAK AKTIF</div>
+    <button class="babak-btn active" onclick="setBabak(1)">BABAK 1</button>
+    <button class="babak-btn" onclick="setBabak(2)">BABAK 2</button>
+    <button class="babak-btn" onclick="setBabak(3)">BABAK 3</button>
+    <button class="babak-btn btn-mulai" onclick="toggleTimer()">MULAI</button>
+    <button class="babak-btn btn-reset" onclick="resetAll()">RESET</button>
+    <button class="babak-btn btn-wa" onclick="kirimWA()">KIRIM WA</button>
+  </div>
+
+  <!-- KOLOM MERAH -->
+  <div class="col merah">
+    <div class="title">MERAH</div>
+    <div class="circle" style="border-color:#ef4444;box-shadow:0 0 30px #ef4444"></div>
+    <div class="score" id="scoreMerah">0</div>
+    <input type="text" id="namaMerah" placeholder="NAMA ATLET MERAH" onblur="saveNama()">
+    <input type="text" id="perguruanMerah" placeholder="NAMA PERGURUAN MERAH" onblur="saveNama()">
+    <div class="btn-grid">
+      <button class="btn" onclick="addScore('merah',1)">Serangan<br>Tangan</button>
+      <button class="btn" onclick="addScore('merah',2)">Tendangan</button>
+      <button class="btn" onclick="addScore('merah',3)">Bantingan</button>
+      <button class="btn" onclick="addScore('merah',-1)">JURI 1<br><small id="j1m">0</small></button>
+      <button class="btn" onclick="addScore('merah',-2)">JURI 2<br><small id="j2m">0</small></button>
+      <button class="btn" onclick="addScore('merah',-3)">JURI 3<br><small id="j3m">0</small></button>
+    </div>
   </div>
 </div>
 
-<div class="status" id="status">Menghubungkan...</div>
+<div class="settings">
+  <label>Mode HP:</label>
+  <select id="modeSelect">
+    <option value="juri">MODE JURI - Bisa Pencet</option>
+    <option value="display">MODE DISPLAY - Layar Saja</option>
+  </select>
+  <button onclick="saveMode()">SIMPAN</button>
+</div>
+
+<div class="status" id="status">Connecting...</div>
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getDatabase, ref, onValue, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-const firebaseConfig = {
-  databaseURL: "https://juri-silat-psht-by-4n4n9-default-rtdb.asia-southeast1.firebasedatabase.app/"
-};
-
-const app = initializeApp(firebaseConfig);
+const app = initializeApp({databaseURL: "https://juri-silat-psht-by-4n4n9-default-rtdb.asia-southeast1.firebasedatabase.app/"});
 const db = getDatabase(app);
-const scoreRef = ref(db, 'score');
+const dataRef = ref(db, 'match');
 
-// Load mode dari localStorage
-let mode = localStorage.getItem('juriMode') || 'juri1';
+let mode = localStorage.getItem('juriMode') || 'juri';
+let timerInterval;
+let isRunning = false;
+
 document.getElementById('modeSelect').value = mode;
-applyMode();
-
-function applyMode() {
-  if(mode === 'display') {
-    document.body.classList.add('mode-display');
-  } else {
-    document.body.classList.remove('mode-display');
-    // Atur tombol sesuai juri
-    const btnMerah = document.getElementById('btnMerah');
-    const btnBiru = document.getElementById('btnBiru');
-    if(mode === 'juri1') {
-      btnMerah.style.display = 'grid';
-      btnBiru.style.display = 'none';
-    } else if(mode === 'juri2') {
-      btnMerah.style.display = 'none';
-      btnBiru.style.display = 'grid';
-    } else if(mode === 'juri3') {
-      btnMerah.style.display = 'grid';
-      btnBiru.style.display = 'none';
-    }
-  }
-}
+if(mode === 'display') document.body.classList.add('mode-display');
 
 window.saveMode = function() {
   mode = document.getElementById('modeSelect').value;
   localStorage.setItem('juriMode', mode);
-  applyMode();
-  alert('Mode disimpan: ' + mode.toUpperCase());
+  if(mode === 'display') document.body.classList.add('mode-display');
+  else document.body.classList.remove('mode-display');
+  alert('Mode: ' + mode.toUpperCase());
 }
 
-// Listen realtime ke Firebase
-onValue(scoreRef, (snapshot) => {
-  const data = snapshot.val() || {merah: 0, biru: 0};
-  document.getElementById('scoreMerah').textContent = data.merah;
-  document.getElementById('scoreBiru').textContent = data.biru;
-  document.getElementById('status').textContent = '✓ Terhubung Realtime';
-  document.getElementById('status').style.color = '#22c55e';
+// Load data realtime
+onValue(dataRef, (snap) => {
+  const d = snap.val() || {biru:0,merah:0,babak:1,timer:180,namaBiru:'',namaMerah:'',perguruanBiru:'',perguruanMerah:''};
+  document.getElementById('scoreBiru').textContent = d.biru;
+  document.getElementById('scoreMerah').textContent = d.merah;
+  document.getElementById('namaBiru').value = d.namaBiru || '';
+  document.getElementById('namaMerah').value = d.namaMerah || '';
+  document.getElementById('perguruanBiru').value = d.perguruanBiru || '';
+  document.getElementById('perguruanMerah').value = d.perguruanMerah || '';
+  updateTimerDisplay(d.timer);
+  setBabakUI(d.babak);
+  document.getElementById('status').textContent = '✓ Online';
 });
 
-// Fungsi tambah/kurang score
 window.addScore = function(warna, nilai) {
-  onValue(scoreRef, (snapshot) => {
-    const data = snapshot.val() || {merah: 0, biru: 0};
-    let newScore = data[warna] + nilai;
+  onValue(dataRef, (snap) => {
+    const d = snap.val() || {biru:0,merah:0};
+    let newScore = d[warna] + nilai;
     if(newScore < 0) newScore = 0;
-    update(scoreRef, {[warna]: newScore});
+    update(dataRef, {[warna]: newScore});
   }, {onlyOnce: true});
 }
 
-window.resetScore = function() {
-  if(confirm('Reset score ke 0-0?')) {
-    update(scoreRef, {merah: 0, biru: 0});
+window.saveNama = function() {
+  update(dataRef, {
+    namaBiru: document.getElementById('namaBiru').value,
+    namaMerah: document.getElementById('namaMerah').value,
+    perguruanBiru: document.getElementById('perguruanBiru').value,
+    perguruanMerah: document.getElementById('perguruanMerah').value
+  });
+}
+
+window.setBabak = function(n) {
+  update(dataRef, {babak: n});
+  setBabakUI(n);
+}
+
+function setBabakUI(n) {
+  document.querySelectorAll('.babak-btn').forEach((b,i) => {
+    b.classList.remove('active');
+    if(i === n-1) b.classList.add('active');
+  });
+}
+
+window.toggleTimer = function() {
+  isRunning =!isRunning;
+  document.querySelector('.btn-mulai').textContent = isRunning? 'PAUSE' : 'MULAI';
+  if(isRunning) {
+    timerInterval = setInterval(() => {
+      onValue(dataRef, (snap) => {
+        let t = snap.val().timer || 180;
+        t = t - 1;
+        if(t < 0) t = 0;
+        update(dataRef, {timer: t});
+        if(t === 0) {clearInterval(timerInterval); isRunning = false;}
+      }, {onlyOnce: true});
+    }, 1000);
+  } else clearInterval(timerInterval);
+}
+
+function updateTimerDisplay(sec) {
+  let m = Math.floor(sec/60);
+  let s = sec%60;
+  document.getElementById('timer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+window.resetAll = function() {
+  if(confirm('Reset semua?')) {
+    clearInterval(timerInterval);
+    isRunning = false;
+    update(dataRef, {biru:0,merah:0,timer:180,babak:1});
+    document.querySelector('.btn-mulai').textContent = 'MULAI';
   }
+}
+
+window.kirimWA = function() {
+  const d = document.getElementById('scoreBiru').textContent + '-' + document.getElementById('scoreMerah').textContent;
+  const text = `Hasil PSHT: Biru ${document.getElementById('namaBiru').value} vs Merah ${document.getElementById('namaMerah').value} = ${d}`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(text));
 }
 </script>
 </body>
